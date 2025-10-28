@@ -1,0 +1,1089 @@
+/* Dashboard Page Styles */
+.dashboard-container {
+  /* Full viewport dimensions */
+  width: 100vw;
+  min-height: 100vh;
+  
+  /* Gradient background with black and blue theme */
+  background: linear-gradient(
+    to bottom,
+    #000000 0%,     /* Top: pure black */
+    #0d1929 30%,    /* Dark blue transition */
+    #1a2f47 70%,    /* Medium blue */
+    #2d4a6b 100%    /* Deeper blue at bottom */
+  );
+  
+  /* Ensure smooth rendering */
+  background-attachment: fixed;
+  
+  /* Remove any potential margins/padding */
+  margin: 0;
+  padding: 0;
+  
+  /* Allow scrolling if needed */
+  overflow-y: auto;
+  
+  /* Position relative for future content */
+  position: relative;
+}
+
+/* Dashboard Logo - Upper Left Corner */
+.dashboard-logo {
+  /* Position in upper left corner */
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  
+  /* Logo size matching landing page */
+  height: 50px;
+  width: auto;
+  
+  /* Behind the text */
+  z-index: 1;
+  
+  /* Smooth transitions */
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.dashboard-logo:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
+}
+
+/* Dashboard Logo Text - Upper Left Corner */
+.dashboard-logo-text {
+  /* Position next to the logo */
+  position: absolute;
+  top: 26.5px;
+  left: 88px;
+  
+  /* Text styling matching landing page */
+  font-size: 36px;
+  font-weight: 700;
+  color: rgb(179, 175, 175);
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-optical-sizing: auto;
+  
+  /* Ensure text appears above logo */
+  z-index: 2;
+  
+  /* Styling */
+  line-height: 1;
+  letter-spacing: 0.5px;
+}
+
+/* Dashboard Page Title - Connected to Brand */
+.dashboard-page-title {
+  /* Position right after the brand text */
+  position: absolute;
+  top: 32px;
+  left: 240px;
+  
+  /* Text styling - lighter and smaller */
+  font-size: 24px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: "Bricolage Grotesque", sans-serif;
+  
+  /* Add a separator */
+  padding-left: 20px;
+  border-left: 2px solid rgba(255, 255, 255, 0.3);
+  
+  /* Ensure text appears above logo */
+  z-index: 2;
+  
+  /* Styling */
+  line-height: 1;
+  letter-spacing: 0.3px;
+}
+
+/* Header Action Buttons - Right Upper Corner */
+.header-actions {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 1000;
+}
+
+.header-action-btn {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.15) 0%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0.12) 100%
+  );
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  color: rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  box-shadow: 
+    0 4px 15px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  text-decoration: none;
+}
+
+.header-action-btn:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.25) 0%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0.2) 100%
+  );
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 
+    0 6px 20px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  color: white;
+}
+
+.header-action-btn:active {
+  transform: translateY(0);
+}
+
+/* Individual Button Styles */
+.add-btn {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+}
+
+.upgrade-btn {
+  padding: 10px 16px;
+  height: 40px;
+}
+
+.profile-btn {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+}
+
+/* Button Hover Effects */
+.add-btn:hover svg {
+  transform: rotate(90deg);
+}
+
+.profile-btn:hover svg {
+  transform: scale(1.1);
+}
+
+/* Glassy Curved Sidebar - Tube Style */
+.sidebar {
+  position: fixed;
+  top: 100px; /* Start below the logo */
+  left: 20px; /* Not touching the edge */
+  bottom: 20px; /* Not touching the bottom edge */
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.15) 0%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0.12) 100%
+  );
+  backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 25px; /* Fully rounded like a tube */
+  transition: all 0.3s ease;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+}
+
+.sidebar.collapsed {
+  width: 70px;
+}
+
+.sidebar.expanded {
+  width: 250px;
+}
+
+.sidebar-toggle {
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 25px 25px 0 0; /* Rounded top to match tube */
+}
+
+.sidebar-toggle:hover {
+  color: white;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.sidebar-items {
+  flex: 1;
+  padding: 15px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+.sidebar-items::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 15px;
+  margin: 0 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+.sidebar-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transition: left 0.6s ease;
+}
+
+.sidebar-item:hover::before {
+  left: 100%;
+}
+
+.sidebar-item:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: scale(1.02);
+}
+
+.sidebar-item.active {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease;
+}
+
+.sidebar-item:hover .sidebar-icon,
+.sidebar-item.active .sidebar-icon {
+  color: white;
+  transform: scale(1.1);
+}
+
+.sidebar-text {
+  margin-left: 15px;
+  color: rgba(255, 255, 255, 0.8);
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  white-space: nowrap;
+  opacity: 1;
+  transition: all 0.3s ease;
+}
+
+.sidebar.collapsed .sidebar-text {
+  opacity: 0;
+  transform: translateX(-20px);
+}
+
+.sidebar-item:hover .sidebar-text,
+.sidebar-item.active .sidebar-text {
+  color: white;
+}
+
+.sidebar-bottom {
+  padding: 15px 0 20px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 0 0 25px 25px; /* Rounded bottom to match tube */
+}
+
+/* Main Content Area */
+.main-content {
+  transition: all 0.3s ease;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.main-content.sidebar-collapsed {
+  margin-left: 110px; /* Account for sidebar width + gap */
+}
+
+.main-content.sidebar-expanded {
+  margin-left: 290px; /* Account for sidebar width + gap */
+}
+
+/* Dashboard Main Heading */
+.dashboard-main-heading {
+  color: white;
+  font-size: 42px;
+  font-weight: 700;
+  font-family: "Bricolage Grotesque", sans-serif;
+  margin: 40px 0 30px 0;
+  padding-top: 42px; /* Space from the header */
+  background: linear-gradient(135deg, #ffffff, rgba(255, 255, 255, 0.9));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  text-align: center;
+}
+
+/* Glassy Prompt Area */
+.prompt-container {
+  max-width: 800px;
+  margin: 0 auto 40px auto;
+  padding: 0 20px;
+}
+
+.prompt-input-wrapper {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.15) 0%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0.12) 100%
+  );
+  backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 20px;
+  display: flex;
+  align-items: flex-end;
+  gap: 15px;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.prompt-input-wrapper:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.prompt-input-wrapper:focus-within {
+  border-color: rgba(255, 255, 255, 0.4);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.2) 0%,
+    rgba(255, 255, 255, 0.12) 50%,
+    rgba(255, 255, 255, 0.18) 100%
+  );
+}
+
+.prompt-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: white;
+  font-size: 16px;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 400;
+  line-height: 1.5;
+  resize: none;
+  min-height: 60px;
+  padding: 10px 0;
+}
+
+.prompt-input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+  font-style: italic;
+}
+
+.prompt-input:focus::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.prompt-submit-btn {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.9) 0%,
+    rgba(255, 255, 255, 0.8) 100%
+  );
+  color: #1a2f47;
+  border: none;
+  border-radius: 12px;
+  padding: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+  min-width: 48px;
+  min-height: 48px;
+}
+
+.prompt-submit-btn:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 0.95) 100%
+  );
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3);
+}
+
+.prompt-submit-btn:active {
+  transform: translateY(0);
+}
+
+.prompt-submit-btn svg {
+  transition: all 0.3s ease;
+}
+
+.prompt-submit-btn:hover svg {
+  transform: scale(1.1);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .sidebar.expanded {
+    width: 200px;
+  }
+  
+  .main-content.sidebar-expanded {
+    margin-left: 200px;
+  }
+  
+  .sidebar-text {
+    font-size: 13px;
+  }
+}
+
+/* AI Suggestions */
+.ai-suggestions {
+  margin: 1.5rem auto 3rem auto;
+  max-width: 1200px;
+  padding: 0 2rem;
+}
+
+.suggestions-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.suggestion-card {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.12) 0%,
+    rgba(255, 255, 255, 0.06) 50%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60px;
+  box-shadow: 
+    0 4px 15px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.suggestion-card:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.18) 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0.15) 100%
+  );
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-3px);
+  box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.suggestion-text {
+  color: white;
+  font-size: 0.9rem;
+  line-height: 1.3;
+  margin: 0;
+  opacity: 1;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* Responsive for suggestions */
+@media (max-width: 768px) {
+  .suggestions-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+  
+  .ai-suggestions {
+    padding: 0 1.5rem;
+  }
+  
+  .suggestion-card {
+    padding: 0.75rem 1rem;
+    height: 50px;
+  }
+  
+  .suggestion-text {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .suggestions-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .ai-suggestions {
+    max-width: 100%;
+  }
+}
+
+/* Analytics Section */
+.analytics-section {
+  margin: 2rem auto 3rem auto;
+  max-width: 1000px;
+  padding: 0 2rem;
+}
+
+.analytics-title {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  text-align: left;
+  opacity: 0.9;
+  font-family: "Bricolage Grotesque", sans-serif;
+}
+
+.analytics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.analytics-card {
+  background: linear-gradient(
+    135deg,
+    rgba(8, 28, 45, 0.35) 0%,
+    rgba(15, 35, 58, 0.45) 50%,
+    rgba(28, 18, 38, 0.35) 100%
+  );
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.analytics-card:hover {
+  transform: translateY(-10px);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.analytics-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: white;
+  font-family: "Bricolage Grotesque", sans-serif;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, #ffffff, rgba(255, 255, 255, 0.8));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.analytics-label {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-family: "Montserrat", sans-serif;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+/* Responsive for analytics */
+@media (max-width: 768px) {
+  .analytics-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .analytics-section {
+    padding: 0 1.5rem;
+  }
+  
+  .analytics-card {
+    padding: 1.5rem 1rem;
+  }
+  
+  .analytics-value {
+    font-size: 2rem;
+  }
+  
+  .analytics-label {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .analytics-section {
+    max-width: 100%;
+  }
+}
+
+/* Section Content Styling */
+.section-content {
+  padding: 2rem 0;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-heading {
+  color: white;
+  font-size: 2.5rem;
+  font-weight: 700;
+  font-family: "Bricolage Grotesque", sans-serif;
+  margin-bottom: 2rem;
+  background: linear-gradient(135deg, #ffffff, rgba(255, 255, 255, 0.9));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.section-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+  padding: 0 1rem;
+}
+
+.section-card {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.12) 0%,
+    rgba(255, 255, 255, 0.06) 50%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  box-shadow: 
+    0 4px 15px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.section-card:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.18) 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0.15) 100%
+  );
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-3px);
+  box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.card-icon {
+  font-size: 1.5rem;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  padding: 0.75rem;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  transition: all 0.3s ease;
+}
+
+.section-card:hover .card-icon {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(1.05);
+}
+
+.card-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.card-title {
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+  font-family: "Bricolage Grotesque", sans-serif;
+}
+
+.card-description {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.85rem;
+  margin: 0;
+  font-family: "Montserrat", sans-serif;
+  line-height: 1.4;
+}
+
+.card-status {
+  font-size: 0.75rem;
+  font-weight: 500;
+  font-family: "Montserrat", sans-serif;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  align-self: flex-start;
+  margin-top: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.card-status.active {
+  background: rgba(34, 197, 94, 0.2);
+  color: #22c55e;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.card-status.paused {
+  background: rgba(251, 191, 36, 0.2);
+  color: #fbbf24;
+  border: 1px solid rgba(251, 191, 36, 0.3);
+}
+
+.card-status.connected {
+  background: rgba(59, 130, 246, 0.2);
+  color: #3b82f6;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.card-status.disconnected {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.card-status.template {
+  background: rgba(147, 51, 234, 0.2);
+  color: #9333ea;
+  border: 1px solid rgba(147, 51, 234, 0.3);
+}
+
+.card-status.setting {
+  background: rgba(107, 114, 128, 0.2);
+  color: #9ca3af;
+  border: 1px solid rgba(107, 114, 128, 0.3);
+}
+
+/* Responsive for section content */
+@media (max-width: 768px) {
+  .section-grid {
+    grid-template-columns: 1fr;
+    padding: 0 1.5rem;
+  }
+  
+  .section-heading {
+    font-size: 2rem;
+    text-align: center;
+  }
+  
+  .section-card {
+    padding: 1.25rem;
+  }
+}
+
+/* AI Chat Button - Bottom Right Corner */
+.ai-chat-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.15) 0%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0.12) 100%
+  );
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  color: rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  box-shadow: 
+    0 4px 15px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.ai-chat-btn:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.25) 0%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0.2) 100%
+  );
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 
+    0 6px 20px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  color: white;
+}
+
+/* Chat Overlay */
+.chat-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  animation: fadeIn 0.3s ease;
+}
+
+.chat-popup {
+  width: 450px;
+  height: 600px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.15) 0%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0.12) 100%
+  );
+  backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 
+    0 20px 50px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  animation: slideInUp 0.3s ease;
+}
+
+/* Chat Header */
+.chat-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.chat-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: white;
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.chat-close-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chat-close-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+/* Chat Messages */
+.chat-messages {
+  flex: 1;
+  padding: 1.5rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.chat-message {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.message-avatar {
+  width: 32px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  flex-shrink: 0;
+}
+
+.message-content {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  max-width: 280px;
+}
+
+.message-content p {
+  color: rgba(255, 255, 255, 0.9);
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* Chat Input Area */
+.chat-input-area {
+  padding: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.chat-input {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  color: white;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.9rem;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.chat-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.chat-input:focus {
+  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.chat-send-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chat-send-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInUp {
+  from { 
+    opacity: 0;
+    transform: translateY(50px) scale(0.95);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Responsive for chat */
+@media (max-width: 768px) {
+  .chat-popup {
+    width: 90vw;
+    height: 80vh;
+    margin: 0 1rem;
+  }
+  
+  .ai-chat-btn {
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+  }
+}

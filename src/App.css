@@ -1,0 +1,512 @@
+@import url('https://fonts.googleapis.com/css2?family=Alan+Sans:wght@300..900&family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+
+.gradient-background {
+  /* Full viewport dimensions with extra height for scrolling */
+  width: 100vw;
+  min-height: 120vh; /* Increased height to allow scrolling */
+  
+  /* Three-color linear gradient */
+  background: linear-gradient(
+    to bottom,
+    #0d2b45 0%,     /* Top: dark navy blue */
+    #203c5b 50%,    /* Middle: deep teal blue */
+    #2b1d3b 100%    /* Bottom: dark purple with hint of magenta */
+  );
+  
+  /* Ensure smooth rendering */
+  background-attachment: fixed;
+  
+  /* Remove any potential margins/padding */
+  margin: 0;
+  padding: 0;
+  
+  /* Allow scrolling */
+  overflow-y: auto;
+  
+  /* Position relative for absolute positioning of button */
+  position: relative;
+}
+
+.signup-button {
+  /* Position in upper right corner */
+  position: absolute;
+  top: 5px !important;
+  right: 14px !important;
+  
+  /* Button styling */
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 700;
+  color: rgb(179, 175, 175);
+  
+  /* Slightly gray transparent background */
+  background-color: rgba(128, 128, 128, 0.3);
+  
+  /* Subtle border */
+  border: none solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  
+  /* Smooth transitions */
+  transition: all 0.3s ease;
+  
+  /* Cursor pointer */
+  cursor: pointer;
+  
+  /* Font family */
+  font-family: inherit;
+}
+
+.signup-button:hover {
+  /* Slightly more opaque on hover */
+  background-color: rgba(143, 134, 134, 0.5);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-1px);
+}
+
+.signup-button:active {
+  transform: translateY(0);
+}
+
+.nav-text {
+  /* Position to the left of the signup button */
+  position: absolute;
+  top: 32px !important; /* Moved down a few pixels for better alignment */
+  right: 130px !important; /* Positioned to the left of the button */
+  
+  /* Text styling to match the button */
+  font-size: 14px;
+  font-weight: 700;
+  color: rgb(179, 175, 175);
+  font-family: inherit;
+  text-decoration: none;
+  
+  /* Align vertically with the button */
+  line-height: 1;
+  
+  /* Subtle hover effect */
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.nav-text:hover {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.logo {
+  /* Position behind the CloLabs text */
+  position: absolute;
+  top: 25.4%; /* Slightly above the CloLabs text */
+  left: 10.5%; /* Slightly to the left of the CloLabs text */
+  
+  /* Larger logo size for background effect */
+  height: 58px;
+  width: auto;
+  
+  /* Behind the text */
+  z-index: 1;
+  /* opacity: 0.3; /* Semi-transparent for background effect */
+  
+  /* Smooth transitions */
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.logo:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
+}
+
+.logo-text {
+  /* Position closer to center but not exactly centered */
+  position: absolute;
+  top: 26.5%; /* Moved up from 30% */
+  left: 15.5%; /* Moved right from 12% */
+  
+  /* Text styling to match the signup button color */
+  font-size: 36px; /* Quite bigger size */
+  font-weight: 700;
+  color: rgb(179, 175, 175); /* Same color as signup button */
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-optical-sizing: auto;
+  
+  /* Ensure text appears above logo */
+  z-index: 2;
+  
+  /* Styling */
+  line-height: 1;
+  letter-spacing: 0.5px;
+}
+
+.start-your-text {
+  /* Position right below the Clolabs text with same alignment */
+  position: absolute;
+  top: 32%; /* Moved up from 36% */
+  left: 12%; /* Same left alignment as Clolabs */
+  
+  /* Text styling - bigger and white */
+  font-size: 64px; /* Made bigger from 48px */
+  font-weight: 700;
+  color: white; /* White color */
+  font-family: "Montserrat", sans-serif;
+  
+  /* Styling */
+  line-height: 1;
+  letter-spacing: 0.5px;
+}
+
+.ai-text {
+  /* Position right below the Start Your text with same alignment */
+  position: absolute;
+  top: 38%; /* Moved up from 42% */
+  left: 12%; /* Same left alignment as other texts */
+  
+  /* Text styling - same size and color as Start Your */
+  font-size: 64px; /* Made bigger from 48px */
+  font-weight: 700;
+  color: white; /* Same white color */
+  font-family: "Montserrat", sans-serif;
+  
+  /* Styling */
+  line-height: 1;
+  letter-spacing: 0.5px;
+}
+
+.automation-text {
+  /* Position right below the AI text with same alignment */
+  position: absolute;
+  top: 44%; /* Moved up from 48% */
+  left: 12%; /* Same left alignment as other texts */
+  
+  /* Text styling - same size but gradient color */
+  font-size: 64px; /* Made bigger from 48px */
+  font-weight: 700;
+  font-family: "Montserrat", sans-serif;
+  
+  /* Gradient color matching background theme */
+  background: linear-gradient(
+    135deg,
+    #8fb3d4 0%,     /* Much lighter navy blue */
+    #9bc4e0 50%,    /* Much lighter teal blue */
+    #c4b3d4 100%    /* Much lighter purple with magenta */
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  
+  /* Styling */
+  line-height: 1;
+  letter-spacing: 0.5px;
+}
+
+.description-text {
+  /* Position right below the Automation Here text with same alignment */
+  position: absolute;
+  top: 52%; /* Moved up from 56.5% to balance spacing */
+  left: 12%; /* Same left alignment as other texts */
+  
+  /* Text styling to match Explore CloLabs */
+  font-size:18px;
+  font-weight: 700;
+  color: rgb(179, 175, 175);
+  font-family: inherit;
+  
+  /* Styling for better readability */
+  line-height: 1;
+  max-width: 500px; /* Limit width for better readability */
+  
+  /* Subtle hover effect */
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.description-text:hover {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.start-automating-button {
+  /* Position below the description text with same alignment */
+  position: absolute;
+  top: 61%; /* Moved up from 65% */
+  left: 12%; /* Same left alignment as other texts */
+  
+  /* Button styling similar to signup but slightly bigger text */
+  padding: 12px 24px; /* Slightly bigger padding */
+  font-size: 16px; /* Bigger text size than signup (14px) */
+  font-weight: 700;
+  color: #0d2b45; /* Dark text for contrast on white background */
+  
+  /* White background */
+  background-color: white;
+  
+  /* Subtle border */
+  border: none solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  
+  /* Smooth transitions */
+  transition: all 0.3s ease;
+  
+  /* Cursor pointer */
+  cursor: pointer;
+  
+  /* Font family */
+  font-family: inherit;
+}
+
+.start-automating-button:hover {
+  /* Slightly gray background on hover */
+  background-color: rgba(240, 240, 240, 0.95);
+  border-color: rgba(255, 255, 255, 0.6);
+  transform: translateY(-1px);
+}
+
+.start-automating-button:active {
+  transform: translateY(0);
+}
+
+.footer {
+  position: absolute;
+  bottom: 20px; /* Moved up from bottom edge */
+  left: 20px;
+  right: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  background-color: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px; /* Added border radius for floating effect */
+}
+
+.footer-left {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+.footer-brand {
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: white;
+}
+
+.footer-nav {
+  display: flex;
+  gap: 30px;
+}
+
+.footer-right {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.footer-legal {
+  display: flex;
+  gap: 20px;
+}
+
+.footer-link {
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 400;
+  transition: color 0.3s ease;
+}
+
+.footer-link:hover {
+  color: white;
+}
+
+.footer-copyright {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+/* Popup Styles */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+}
+
+.popup-card {
+  background: linear-gradient(
+    135deg,
+    rgba(13, 43, 69, 0.25) 0%,     /* Top: dark navy blue with transparency */
+    rgba(32, 60, 91, 0.35) 50%,    /* Middle: deep teal blue with transparency */
+    rgba(43, 29, 59, 0.25) 100%    /* Bottom: dark purple with transparency */
+  );
+  backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 25px;
+  padding: 40px;
+  width: 90%;
+  max-width: 400px;
+  position: relative;
+  box-shadow: 
+    0 25px 50px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.close-button {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 24px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.close-button:hover {
+  color: white;
+}
+
+.popup-title {
+  color: white;
+  font-size: 28px;
+  font-weight: 700;
+  font-family: "Bricolage Grotesque", sans-serif;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.popup-subtitle {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 16px;
+  font-weight: 400;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.google-signup-button {
+  background-color: white;
+  color: #333;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  padding: 15px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.google-signup-button:hover {
+  background-color: rgba(240, 240, 240, 0.95);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.google-icon {
+  background: linear-gradient(45deg, #4285f4, #34a853, #fbbc05, #ea4335);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.divider-text {
+  padding: 0 20px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-input {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: 15px 20px;
+  color: white;
+  font-size: 16px;
+  font-family: inherit;
+  transition: all 0.3s ease;
+}
+
+.form-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.submit-button {
+  background-color: white;
+  color: #0d2b45;
+  border: none;
+  border-radius: 12px;
+  padding: 15px 20px;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+}
+
+.submit-button:hover {
+  background-color: rgba(240, 240, 240, 0.95);
+  transform: translateY(-1px);
+}
+
+.popup-footer {
+  text-align: center;
+  margin-top: 20px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+}
+
+.login-link {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.login-link:hover {
+  color: rgba(255, 255, 255, 0.8);
+}
