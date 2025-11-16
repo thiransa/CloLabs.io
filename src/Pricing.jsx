@@ -21,7 +21,7 @@ function Pricing() {
       monthly: 0,
       annual: 0
     },
-    basic: {
+    lite: {
       monthly: 15.99,
       annual: 172.69 // 10% discount (15.99 * 12 * 0.9)
     },
@@ -59,6 +59,7 @@ function Pricing() {
       
       <div className="pricing-cards">
         <div className="pricing-card">
+          <div className="plan-label">FREE</div>
           <h3 className="card-title">Free</h3>
           <div className="card-price">
             <span className="price">${plans.free[isAnnual ? 'annual' : 'monthly']}</span>
@@ -75,23 +76,26 @@ function Pricing() {
 
         <div className="pricing-card featured">
           <div className="featured-badge">Most Popular</div>
-          <h3 className="card-title">Basic</h3>
+          <div className="plan-label">LITE</div>
+          <h3 className="card-title">Lite</h3>
           <div className="card-price">
-            <span className="price">${isAnnual ? plans.basic.annual.toFixed(2) : plans.basic.monthly.toFixed(2)}</span>
+            <span className="price">${isAnnual ? plans.lite.annual.toFixed(2) : plans.lite.monthly.toFixed(2)}</span>
             <span className="period">/{isAnnual ? 'year' : 'month'}</span>
-            {isAnnual && <div className="savings">Save ${((plans.basic.monthly * 12) - plans.basic.annual).toFixed(2)}/year</div>}
+            {isAnnual && <div className="savings">Save ${((plans.lite.monthly * 12) - plans.lite.annual).toFixed(2)}/year</div>}
           </div>
           <ul className="card-features">
-            <li>Advanced automation</li>
+            <li>500 AI credits/month</li>
             <li>1000 Tasks</li>
             <li>Priority support</li>
             <li>All integrations</li>
             <li>Custom templates</li>
+            <li>Workflow analytics</li>
           </ul>
           <button className="card-button">Start Free Trial</button>
         </div>
 
         <div className="pricing-card">
+          <div className="plan-label">PRO</div>
           <h3 className="card-title">Pro</h3>
           <div className="card-price">
             <span className="price">${isAnnual ? plans.pro.annual.toFixed(2) : plans.pro.monthly.toFixed(2)}</span>
@@ -99,12 +103,13 @@ function Pricing() {
             {isAnnual && <div className="savings">Save ${((plans.pro.monthly * 12) - plans.pro.annual).toFixed(2)}/year</div>}
           </div>
           <ul className="card-features">
-            <li>Enterprise automation</li>
+            <li>2000 AI credits/month</li>
             <li>10,000 Tasks</li>
             <li>24/7 dedicated support</li>
             <li>Custom integrations</li>
             <li>Advanced analytics</li>
             <li>Team collaboration</li>
+            <li>API access</li>
           </ul>
           <button className="card-button">Contact Sales</button>
         </div>
