@@ -1,11 +1,26 @@
 import './App.css'
 import logo from './assets/17F007DC-F981-4891-AED4-6F81382D4181.PNG'
-import { useState } from 'react'
+import slackLogo from './assets/slack.png'
+import gptLogo from './assets/gpt.png'
+import calendarLogo from './assets/calender.png'
+import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import AuthForm from './components/AuthForm'
+import { useAuth } from './contexts/AuthContext'
+import gmailLogo from './assets/gmail.png'
+import mailchimpLogo from './assets/mailchimp.png'
+import driveLogo from './assets/drive.png'
 
 function App() {
   const [showSignupPopup, setShowSignupPopup] = useState(false)
   const navigate = useNavigate()
+  const { user, loading } = useAuth()
+
+  useEffect(() => {
+    if (!loading && user) {
+      navigate('/dashboard')
+    }
+  }, [user, loading, navigate])
 
   const handleSignupClick = () => {
     setShowSignupPopup(true)
@@ -23,6 +38,37 @@ function App() {
 
   return (
     <div className="gradient-background">
+      {/* Decorative Rings */}
+      <div className="decorative-rings">
+        <div className="ring ring-1" style={{borderWidth: '2px', borderStyle: 'solid', borderColor: 'rgba(128, 128, 128, 0.25)', outline: 'none', boxShadow: 'none'}}></div>
+        <div className="ring ring-2" style={{borderWidth: '2px', borderStyle: 'solid', borderColor: 'rgba(128, 128, 128, 0.23)', outline: 'none', boxShadow: 'none'}}>
+          <div className="ring-icon ring-icon-image slack-icon">
+            <img src={slackLogo} alt="Slack logo" />
+          </div>
+        </div>
+        <div className="ring ring-3" style={{borderWidth: '2px', borderStyle: 'solid', borderColor: 'rgba(128, 128, 128, 0.21)', outline: 'none', boxShadow: 'none'}}>
+          <div className="ring-icon ring-icon-image gmail-icon">
+            <img src={gmailLogo} alt="Gmail logo" />
+          </div>
+        </div>
+        <div className="ring ring-4" style={{borderWidth: '2px', borderStyle: 'solid', borderColor: 'rgba(128, 128, 128, 0.19)', outline: 'none', boxShadow: 'none'}}>
+          <div className="ring-icon ring-icon-image gpt-icon">
+            <img src={gptLogo} alt="ChatGPT logo" />
+          </div>
+        </div>
+        <div className="ring ring-5" style={{borderWidth: '2px', borderStyle: 'solid', borderColor: 'rgba(128, 128, 128, 0.17)', outline: 'none', boxShadow: 'none'}}>
+          <div className="ring-icon ring-icon-image calendar-icon">
+            <img src={calendarLogo} alt="Calendar logo" />
+          </div>
+          <div className="ring-icon ring-icon-image mailchimp-icon">
+            <img src={mailchimpLogo} alt="Mailchimp logo" />
+          </div>
+          <div className="ring-icon ring-icon-image drive-icon">
+            <img src={driveLogo} alt="Google Drive logo" />
+          </div>
+        </div>
+      </div>
+      
       <img src={logo} alt="CloLabs Logo" className="logo" />
       <div className="logo-text">Clolabs</div>
       <div className="start-your-text">Start Your</div>
@@ -44,7 +90,7 @@ function App() {
         <div className="footer-left">
           <span className="footer-brand">CloLabs</span>
           <nav className="footer-nav">
-            <a href="#" className="footer-link">Discover</a>
+            <Link to="/explore" className="footer-link">Discover</Link>
             <Link to="/pricing" className="footer-link">Pricing</Link>
             <a href="#" className="footer-link">Help</a>
           </nav>
@@ -69,38 +115,7 @@ function App() {
             <h2 className="popup-title">Join CloLabs</h2>
             <p className="popup-subtitle">Start your AI automation journey today</p>
             
-            <button className="google-signup-button">
-              <span className="google-icon">G</span>
-              Continue with Google
-            </button>
-            
-            <div className="divider">
-              <span className="divider-text">or</span>
-            </div>
-            
-            <form className="signup-form" onSubmit={handleGetStarted}>
-              <input 
-                type="text" 
-                placeholder="Full Name" 
-                className="form-input"
-              />
-              <input 
-                type="email" 
-                placeholder="Email Address" 
-                className="form-input"
-              />
-              <input 
-                type="password" 
-                placeholder="Password" 
-                className="form-input"
-              />
-              <button type="submit" className="submit-button">
-                Get Started
-              </button>
-            </form>
-            <p className="popup-footer">
-              Already have an account? <a href="#" className="login-link">Sign In</a>
-            </p>
+            <AuthForm onSuccess={() => setShowSignupPopup(false)} />
           </div>
         </div>
       )}

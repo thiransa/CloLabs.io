@@ -2,12 +2,7 @@
 
 .explore-container {
   min-height: 100vh;
-  background: linear-gradient(
-    to bottom,
-    #000000 0%,        /* Pure black at top */
-    #0a1520 50%,       /* Dark black with noticeable blue hint */
-    #000000 100%       /* Pure black at bottom */
-  );
+  background: linear-gradient(to bottom, #0d2b45 0%, #203c5b 50%, #2b1d3b 100%);
   background-attachment: fixed;
   display: flex;
   flex-direction: column;
@@ -436,10 +431,13 @@
 }
 
 .builder-title {
+  position: fixed;
+  margin-left: 20px !important;
   color: white;
   font-size: 36px;
   font-weight: 700;
   font-family: "Bricolage Grotesque", sans-serif;
+  margin-top: 1270px !important;
   margin: 0 0 20px 0;
   line-height: 1.2;
 }

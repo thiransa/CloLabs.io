@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Explore.css';
+import AuthForm from './components/AuthForm';
 
 const Explore = () => {
   const [showSignupPopup, setShowSignupPopup] = useState(false);
@@ -194,8 +195,8 @@ const Explore = () => {
       {/* Builder Preview Section */}
       <div className="builder-preview-section">
         <div className="builder-content">
+          <h2 className="builder-title">Visual workflow builder designed for creativity.</h2>
           <div className="builder-text">
-            <h2 className="builder-title">Visual workflow builder designed for creativity.</h2>
             <p className="builder-subtitle">Drag, drop, and connect — build automation that feels alive.</p>
             <button className="builder-cta-btn">
               Try the Builder
@@ -306,24 +307,7 @@ const Explore = () => {
             <h2 className="popup-title">Join CloLabs</h2>
             <p className="popup-subtitle">Start automating your workflow today</p>
             
-            <button className="google-signup-button">
-              <span className="google-icon">G</span>
-              Continue with Google
-            </button>
-            
-            <div className="divider">
-              <span className="divider-text">or</span>
-            </div>
-            
-            <form className="signup-form" onSubmit={handleGetStarted}>
-              <input type="email" placeholder="Enter your email" className="form-input" />
-              <input type="password" placeholder="Create password" className="form-input" />
-              <button type="submit" className="submit-button">Get Started</button>
-            </form>
-            
-            <p className="popup-footer">
-              Already have an account? <a href="#" className="login-link">Log in</a>
-            </p>
+            <AuthForm onSuccess={() => setShowSignupPopup(false)} />
           </div>
         </div>
       )}

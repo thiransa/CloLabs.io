@@ -1,0 +1,72 @@
+{
+  "meta": {
+    "name": "Sample Workflow",
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "version": "1.0"
+  },
+  "nodes": [
+    {
+      "id": "start-1",
+      "type": "start",
+      "position": { "x": 250, "y": 50 },
+      "data": {
+        "label": "Start",
+        "description": "Workflow entry point"
+      }
+    },
+    {
+      "id": "form-1",
+      "type": "form",
+      "position": { "x": 250, "y": 150 },
+      "data": {
+        "label": "User Input Form",
+        "description": "Collect user data",
+        "fields": ["name", "email", "message"]
+      }
+    },
+    {
+      "id": "integration-1",
+      "type": "integration",
+      "position": { "x": 250, "y": 270 },
+      "data": {
+        "label": "ChatGPT Analysis",
+        "description": "Process with AI",
+        "provider": "openai",
+        "model": "gpt-4"
+      }
+    },
+    {
+      "id": "store-1",
+      "type": "store",
+      "position": { "x": 250, "y": 390 },
+      "data": {
+        "label": "Save to Database",
+        "description": "Store results",
+        "collection": "responses"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "source": "start-1",
+      "target": "form-1",
+      "type": "smoothstep",
+      "animated": true
+    },
+    {
+      "id": "e2",
+      "source": "form-1",
+      "target": "integration-1",
+      "type": "smoothstep",
+      "animated": true
+    },
+    {
+      "id": "e3",
+      "source": "integration-1",
+      "target": "store-1",
+      "type": "smoothstep",
+      "animated": true
+    }
+  ]
+}

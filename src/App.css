@@ -263,6 +263,245 @@
   transform: translateY(0);
 }
 
+/* Decorative Rings */
+.decorative-rings {
+  position: absolute;
+  top: 45%;
+  right: 7%;
+  transform: translateY(-50%);
+  width: 500px;
+  height: 500px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.decorative-rings .ring {
+  position: absolute;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.decorative-rings .ring-1 {
+  width: 80px;
+  height: 80px;
+}
+
+.decorative-rings .ring-1 .ring-icon {
+  top: -16px;
+  right: 20%;
+  left: auto;
+  transform: translateY(0);
+}
+
+.decorative-rings .ring-2 {
+  width: 160px;
+  height: 160px;
+}
+
+.decorative-rings .ring-2 .ring-icon {
+  top: 50%;
+  bottom: auto;
+  left: -21px;
+  transform: translateY(-50%);
+}
+
+.decorative-rings .ring-2 .gcal-icon {
+  top: auto;
+  bottom: 15%;
+  left: auto;
+  right: -16px;
+  transform: translateY(0);
+}
+
+.decorative-rings .ring-3 {
+  width: 260px;
+  height: 260px;
+}
+
+.decorative-rings .ring-3 .ring-icon {
+  top: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.decorative-rings .ring-4 {
+  width: 380px;
+  height: 380px;
+}
+
+.decorative-rings .ring-4 .ring-icon {
+  top: 50%;
+  left: auto;
+  right: -23px;
+  transform: translateY(-50%);
+}
+
+.decorative-rings .ring-5 {
+  width: 500px;
+  height: 500px;
+}
+
+.ring-5 .ring-icon {
+  top: 75%;
+  left: auto;
+  right: 375px;
+  transform: translateY(-50%);
+}
+
+.ring-5 .mailchimp-icon {
+  top: -2%;
+  bottom: 20%;
+  left: 25%;
+  right: auto;
+  transform: translate(-50%, 50%);
+  width: 48px;
+  height: 48px;
+}
+
+.mailchimp-icon img {
+  border-radius: 50%;
+}
+
+.ring-5 .drive-icon {
+  top: 465px;
+  left: 75%;
+  right: auto;
+  transform: translate(-50%, -50%);
+  width: 29px;
+  height: 29px;
+}
+
+.drive-icon img {
+  border-radius: 6px;
+}
+
+.ring-5 .gforms-icon {
+  top: auto;
+  bottom: 30%;
+  left: auto;
+  right: -16px;
+  transform: translateY(50%);
+}
+
+.ring-icon {
+  position: absolute;
+  top: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(0, 0, 0, 0.8);
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  padding: 6px;
+  transition: all 0.3s ease;
+}
+
+.ring-icon-image {
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+}
+
+.ring-icon-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.calendar-icon {
+  width: 30px;
+  height: 30px;
+}
+
+.calendar-icon img {
+  border-radius: 6px;
+}
+
+.gmail-icon:hover {
+  color: rgba(0, 0, 0, 1);
+  background: rgba(255, 255, 255, 1);
+  transform: translateX(-50%) scale(1.1);
+}
+
+.slack-icon {
+  color: rgba(0, 0, 0, 0.9);
+}
+
+.slack-icon:hover {
+  color: rgba(0, 0, 0, 1);
+  background: rgba(255, 255, 255, 1);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.dropbox-icon {
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.dropbox-icon:hover {
+  color: rgba(0, 0, 0, 1);
+  background: rgba(255, 255, 255, 1);
+  transform: translate(50%, -50%) scale(1.1);
+}
+
+.notion-icon {
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.notion-icon:hover {
+  color: rgba(0, 0, 0, 1);
+  background: rgba(255, 255, 255, 1);
+  transform: scale(1.1);
+}
+
+.gcal-icon {
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.gcal-icon:hover {
+  color: rgba(0, 0, 0, 1);
+  background: rgba(255, 255, 255, 1);
+  transform: scale(1.1);
+}
+
+.gsheets-icon {
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.gsheets-icon:hover {
+  color: rgba(0, 0, 0, 1);
+  background: rgba(255, 255, 255, 1);
+  transform: translateX(-50%) scale(1.1);
+}
+
+.chatgpt-icon {
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.chatgpt-icon:hover {
+  color: rgba(0, 0, 0, 1);
+  background: rgba(255, 255, 255, 1);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.gforms-icon {
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.gforms-icon:hover {
+  color: rgba(0, 0, 0, 1);
+  background: rgba(255, 255, 255, 1);
+  transform: translateY(50%) scale(1.1);
+}
+
 .footer {
   position: absolute;
   bottom: 20px; /* Moved up from bottom edge */

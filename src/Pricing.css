@@ -3,13 +3,8 @@
   width: 100vw;
   min-height: 120vh; /* Increased height to allow scrolling */
   
-  /* Black gradient with colors matching the landing page theme */
-  background: linear-gradient(
-    to bottom,
-    #000000 0%,        /* Pure black at top */
-    #0a1520 50%,       /* Dark black with noticeable blue hint */
-    #000000 100%       /* Pure black at bottom */
-  );
+  /* Gradient background matching dashboard */
+  background: linear-gradient(to bottom, #0d2b45 0%, #203c5b 50%, #2b1d3b 100%);
   
   /* Ensure smooth rendering */
   background-attachment: fixed;
