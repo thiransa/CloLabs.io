@@ -7,6 +7,7 @@ import { listUserWorkflows, listTemplates, deleteWorkflowFromSupabase } from './
 import { fetchUserIntegrations, createIntegration, deleteIntegration, toggleIntegrationStatus } from './lib/integrationsApi'
 import { loadUserProfile, saveUserProfile } from './lib/profileApi'
 import { generateWorkflow } from './lib/aiAutoBuildApi'
+import { getUserCredits } from './lib/creditsApi'
 import TemplatePreviewModal from './components/TemplatePreviewModal'
 
 // Helper function to mask sensitive URL parts
@@ -75,11 +76,17 @@ const Dashboard = () => {
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false)
   const [integrationError, setIntegrationError] = useState(null)
   const [integrationSuccess, setIntegrationSuccess] = useState('')
+  
+  // Credits state
+  const [credits, setCredits] = useState(null)
+  const [loadingCredits, setLoadingCredits] = useState(false)
+  const [creditsError, setCreditsError] = useState(null)
 
   // Load user profile on mount
   useEffect(() => {
     if (user?.id) {
       loadProfile();
+      loadCredits();
     }
   }, [user?.id]);
 
@@ -122,6 +129,22 @@ const Dashboard = () => {
         timezone: result.data.timezone || 'UTC-5 (Eastern Time)'
       });
     }
+  };
+
+  const loadCredits = async () => {
+    setLoadingCredits(true);
+    setCreditsError(null);
+    
+    const result = await getUserCredits();
+    
+    if (result.error) {
+      console.error('Error loading credits:', result.error);
+      setCreditsError(result.error);
+    } else if (result.data) {
+      setCredits(result.data);
+    }
+    
+    setLoadingCredits(false);
   };
 
 
@@ -731,8 +754,22 @@ const Dashboard = () => {
                 <div className="side-box">
                   <h3 className="analytics-title">Credits Left</h3>
                   <div className="credits-display">
-                    <div className="credits-number">150/1000</div>
-                    <div className="credits-label">Remaining Credits</div>
+                    {loadingCredits ? (
+                      <div className="credits-number">Loading...</div>
+                    ) : creditsError ? (
+                      <div className="credits-number" style={{ fontSize: '14px', color: '#ff6b6b' }}>
+                        Error loading credits
+                      </div>
+                    ) : credits ? (
+                      <>
+                        <div className="credits-number">
+                          {credits.credits_remaining}/{credits.total_credits}
+                        </div>
+                        <div className="credits-label">Remaining Credits</div>
+                      </>
+                    ) : (
+                      <div className="credits-number">--/--</div>
+                    )}
                   </div>
                 </div>
                 <div className="fourth-box">
