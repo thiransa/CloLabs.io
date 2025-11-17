@@ -6,6 +6,7 @@ import calendarLogo from './assets/calender.png'
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import AuthForm from './components/AuthForm'
+import DemoSection from './components/DemoSection'
 import { useAuth } from './contexts/AuthContext'
 import gmailLogo from './assets/gmail.png'
 import mailchimpLogo from './assets/mailchimp.png'
@@ -302,6 +303,8 @@ function App() {
           </div>
         </div>
       </section>
+
+      <DemoSection user={user} navigate={navigate} />
 
       {/* NEW SECTION: Beta Signup */}
       <section className="landing-section beta-signup-section" aria-labelledby="beta-heading">

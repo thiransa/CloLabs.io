@@ -528,6 +528,7 @@
   /* Ensure it's above rings but below modals */
   z-index: 5;
   margin-top: 0;
+  clear: both;
 }
 
 .footer-left {
@@ -1194,6 +1195,197 @@
   }
 }
 
+/* Demo Section */
+.demo-section {
+  background: transparent;
+}
+
+.demo-section .section-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.demo-layout {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
+
+.demo-media {
+  position: relative;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  padding: 8px;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(12px);
+  min-height: 400px;
+}
+
+.demo-media::after {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border-radius: 22px;
+  border: 1px dashed rgba(255, 255, 255, 0.12);
+  pointer-events: none;
+}
+
+.demo-video {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.32);
+  background: #040b16;
+  object-fit: cover;
+}
+
+.demo-content {
+  max-width: 520px;
+}
+
+.demo-section .section-title {
+  text-align: left;
+  margin-bottom: 16px;
+}
+
+.demo-description {
+  text-align: left;
+  margin: 0 0 30px;
+  max-width: 520px;
+}
+
+.demo-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+
+.demo-primary-button,
+.demo-secondary-button {
+  padding: 14px 30px;
+  border-radius: 16px;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: "Montserrat", sans-serif;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-sizing: border-box;
+}
+
+.demo-primary-button {
+  background: linear-gradient(135deg, #ffffff, #e8edf7);
+  color: #0d253f;
+  border: none;
+  box-shadow: 0 12px 26px rgba(255, 255, 255, 0.2);
+}
+
+.demo-primary-button:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 32px rgba(255, 255, 255, 0.25);
+}
+
+.demo-secondary-button {
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(6px);
+}
+
+.demo-secondary-button:hover {
+  background: rgba(255, 255, 255, 0.16);
+  transform: translateY(-2px);
+}
+
+.demo-modal-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28px;
+  background: rgba(7, 14, 26, 0.78);
+  backdrop-filter: blur(14px);
+  z-index: 2000;
+}
+
+.demo-modal {
+  position: relative;
+  width: min(960px, 92vw);
+  padding: 30px;
+  border-radius: 26px;
+  background: rgba(14, 29, 48, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 40px 70px rgba(0, 0, 0, 0.55);
+}
+
+.demo-modal-title {
+  font-size: 24px;
+  color: #ffffff;
+  font-weight: 700;
+  margin-bottom: 20px;
+  font-family: "Montserrat", sans-serif;
+}
+
+.demo-modal-video {
+  width: 100%;
+  display: block;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+  background: #000;
+}
+
+.demo-modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.demo-modal-close:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+@media (max-width: 1024px) {
+  .demo-layout {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+
+  .demo-content {
+    max-width: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .demo-layout {
+    gap: 32px;
+  }
+
+  .demo-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .demo-primary-button,
+  .demo-secondary-button {
+    width: 100%;
+  }
+}
+
 @keyframes drawFlow {
   0% {
     stroke-dashoffset: 520;
@@ -1466,7 +1658,9 @@
 .beta-signup-section {
   background: transparent;
   margin-top: 0;
-  padding-bottom: 100px;
+  padding-bottom: 120px !important;
+  position: relative;
+  z-index: 2;
 }
 
 .beta-container {
@@ -1477,7 +1671,7 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
-  margin-top: 32px;
+  margin-top: 20px;
 }
 
 .beta-input-wrapper {
