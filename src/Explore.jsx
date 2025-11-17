@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Explore.css';
 import AuthForm from './components/AuthForm';
+import builderScreenshot from './assets/builder-screenshot.png';
 
 const Explore = () => {
   const [showSignupPopup, setShowSignupPopup] = useState(false);
@@ -205,16 +206,7 @@ const Explore = () => {
           
           <div className="builder-visuals">
             <div className="builder-screenshot">
-              <div className="screenshot-placeholder">
-                <div className="placeholder-icon">
-                  <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
-                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                    <circle cx="8.5" cy="8.5" r="1.5"/>
-                    <polyline points="21,15 16,10 5,21"/>
-                  </svg>
-                </div>
-                <span className="placeholder-text">Builder Screenshot</span>
-              </div>
+              <img src={builderScreenshot} alt="CloLabs Workflow Builder" className="screenshot-image" />
             </div>
           </div>
         </div>
