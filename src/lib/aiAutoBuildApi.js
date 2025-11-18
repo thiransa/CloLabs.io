@@ -3,6 +3,8 @@
  * Generates workflow structures from natural language prompts
  */
 
+import { checkCredits, deductCredits } from './creditsApi.js';
+
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
@@ -28,6 +30,18 @@ export async function generateWorkflow(prompt, options = {}) {
   if (!prompt || typeof prompt !== 'string' || prompt.trim().length === 0) {
     throw new Error('Prompt is required and must be a non-empty string');
   }
+
+  // Check if user has enough credits before making the API call
+  console.log('[aiAutoBuildApi] Checking credits before generation...');
+  const creditCheck = await checkCredits(1);
+  
+  if (!creditCheck.hasCredits) {
+    throw new Error(
+      `Insufficient credits. You have ${creditCheck.remaining} credits remaining, but need 1 credit to generate a workflow. Your credits will reset soon.`
+    );
+  }
+
+  console.log('[aiAutoBuildApi] User has sufficient credits, proceeding...');
 
   const requestBody = {
     prompt: prompt.trim(),
@@ -68,10 +82,22 @@ export async function generateWorkflow(prompt, options = {}) {
       throw new Error('Invalid response from AI auto-build service');
     }
 
+    // Deduct 1 credit after successful generation
+    console.log('[aiAutoBuildApi] Workflow generated successfully, deducting 1 credit...');
+    const deductResult = await deductCredits(1);
+    
+    if (!deductResult.success) {
+      console.error('[aiAutoBuildApi] Failed to deduct credit:', deductResult.error);
+      // Still return the workflow even if credit deduction fails (they already used the API)
+    } else {
+      console.log('[aiAutoBuildApi] Credit deducted. Remaining:', deductResult.data.credits_remaining);
+    }
+
     return {
       workflow: data.workflow,
       metadata: data.metadata,
-      rawOutput: data.modelOutput
+      rawOutput: data.modelOutput,
+      creditsRemaining: deductResult.data?.credits_remaining
     };
 
   } catch (error) {

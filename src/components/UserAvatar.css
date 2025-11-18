@@ -1,0 +1,77 @@
+.user-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+}
+
+.user-avatar:hover {
+  transform: scale(1.05);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.user-avatar.editable {
+  cursor: pointer;
+}
+
+.user-avatar.editable::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-avatar.editable:hover::after {
+  opacity: 1;
+}
+
+.user-avatar-small {
+  width: 32px;
+  height: 32px;
+}
+
+.user-avatar-medium {
+  width: 40px;
+  height: 40px;
+}
+
+.user-avatar-large {
+  width: 80px;
+  height: 80px;
+}
+
+.user-avatar-initials {
+  color: white;
+  font-weight: 600;
+  font-family: 'Montserrat', sans-serif;
+  user-select: none;
+}
+
+.user-avatar-small .user-avatar-initials {
+  font-size: 12px;
+}
+
+.user-avatar-medium .user-avatar-initials {
+  font-size: 14px;
+}
+
+.user-avatar-large .user-avatar-initials {
+  font-size: 28px;
+}
+
+.user-avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

@@ -1,12 +1,12 @@
 -- Migration: Create user_credits table for credit tracking system
 -- Date: 2025-01-16
--- Purpose: Track beta user credits (500/month limit)
+-- Purpose: Track beta user credits (100/month limit)
 
 -- Create user_credits table
 CREATE TABLE IF NOT EXISTS public.user_credits (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
-    total_credits INTEGER NOT NULL DEFAULT 500,
+    total_credits INTEGER NOT NULL DEFAULT 100,
     used_credits INTEGER NOT NULL DEFAULT 0,
     credits_remaining INTEGER GENERATED ALWAYS AS (total_credits - used_credits) STORED,
     reset_date TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT (CURRENT_DATE + INTERVAL '1 month'),
@@ -24,6 +24,11 @@ CREATE POLICY "Users can view their own credits"
     FOR SELECT
     USING (auth.uid() = user_id);
 
+CREATE POLICY "Users can insert their own credits"
+    ON public.user_credits
+    FOR INSERT
+    WITH CHECK (auth.uid() = user_id);
+
 CREATE POLICY "Users can update their own credits"
     ON public.user_credits
     FOR UPDATE
@@ -38,7 +43,7 @@ CREATE OR REPLACE FUNCTION public.create_user_credits()
 RETURNS TRIGGER AS $$
 BEGIN
     INSERT INTO public.user_credits (user_id, total_credits, used_credits)
-    VALUES (NEW.id, 500, 0)
+    VALUES (NEW.id, 100, 0)
     ON CONFLICT (user_id) DO NOTHING;
     RETURN NEW;
 END;
@@ -65,13 +70,13 @@ END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
 -- Grant necessary permissions
-GRANT SELECT, UPDATE ON public.user_credits TO authenticated;
+GRANT SELECT, INSERT, UPDATE ON public.user_credits TO authenticated;
 GRANT EXECUTE ON FUNCTION public.create_user_credits() TO service_role;
 GRANT EXECUTE ON FUNCTION public.reset_monthly_credits() TO service_role;
 
 -- Comments for documentation
-COMMENT ON TABLE public.user_credits IS 'Tracks user AI credit usage - 500 credits/month for beta users';
-COMMENT ON COLUMN public.user_credits.total_credits IS 'Total credits allocated per month (default: 500)';
+COMMENT ON TABLE public.user_credits IS 'Tracks user AI credit usage - 100 credits/month for beta users ($15 budget ÷ 15 users)';
+COMMENT ON COLUMN public.user_credits.total_credits IS 'Total credits allocated per month (default: 100)';
 COMMENT ON COLUMN public.user_credits.used_credits IS 'Number of credits used this billing cycle';
 COMMENT ON COLUMN public.user_credits.credits_remaining IS 'Computed column: total_credits - used_credits';
 COMMENT ON COLUMN public.user_credits.reset_date IS 'Date when credits will reset to total_credits';

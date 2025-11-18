@@ -7,23 +7,61 @@ import { supabase } from './supabaseClient';
  */
 export async function getUserCredits() {
   try {
+    console.log('[creditsApi] Getting user credits...');
     const { data: { user } } = await supabase.auth.getUser();
     
     if (!user) {
+      console.error('[creditsApi] No user authenticated');
       return { data: null, error: 'User not authenticated' };
     }
 
-    const { data, error } = await supabase
+    console.log('[creditsApi] User ID:', user.id);
+
+    let { data, error } = await supabase
       .from('user_credits')
       .select('*')
       .eq('user_id', user.id)
-      .single();
+      .maybeSingle(); // Use maybeSingle instead of single to handle no results gracefully
+
+    console.log('[creditsApi] Query result:', { data, error });
+
+    // If no credits record exists, create one with 100 credits
+    if (!data && !error) {
+      console.log('[creditsApi] No credits record found, creating one with 100 credits');
+      
+      const resetDate = new Date();
+      resetDate.setDate(resetDate.getDate() + 30);
+      
+      const { data: newCredits, error: insertError } = await supabase
+        .from('user_credits')
+        .upsert({
+          user_id: user.id,
+          total_credits: 100,
+          used_credits: 0,
+          reset_date: resetDate.toISOString()
+        }, {
+          onConflict: 'user_id',
+          ignoreDuplicates: false
+        })
+        .select()
+        .single();
+
+      console.log('[creditsApi] Upsert result:', { newCredits, insertError });
+
+      if (insertError) {
+        console.error('[creditsApi] Error creating credits:', insertError);
+        return { data: null, error: insertError.message };
+      }
+
+      return { data: newCredits, error: null };
+    }
 
     if (error) {
       console.error('[creditsApi] Error fetching credits:', error);
       return { data: null, error: error.message };
     }
 
+    console.log('[creditsApi] Credits loaded successfully:', data);
     return { data, error: null };
   } catch (err) {
     console.error('[creditsApi] Exception:', err);

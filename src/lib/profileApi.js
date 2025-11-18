@@ -44,6 +44,7 @@ export async function saveUserProfile(userId, profileData) {
       company: profileData.company,
       role: profileData.role,
       bio: profileData.bio,
+      avatar_url: profileData.avatarUrl,
       email_notifications: profileData.emailNotifications,
       push_notifications: profileData.pushNotifications,
       weekly_report: profileData.weeklyReport,
@@ -86,5 +87,90 @@ export async function saveUserProfile(userId, profileData) {
   } catch (error) {
     console.error('Unexpected error saving profile:', error);
     return { success: false, error: error.message };
+  }
+}
+
+/**
+ * Upload avatar image to Supabase Storage
+ * @param {string} userId - User ID
+ * @param {File} file - Image file
+ * @returns {Promise<{success: boolean, url?: string, error?: string}>}
+ */
+export async function uploadAvatar(userId, file) {
+  try {
+    const fileExt = file.name.split('.').pop()
+    const fileName = `${userId}-${Date.now()}.${fileExt}`
+    const filePath = `avatars/${fileName}`
+
+    // Upload file to storage
+    const { data, error: uploadError } = await supabase.storage
+      .from('user-assets')
+      .upload(filePath, file, {
+        cacheControl: '3600',
+        upsert: true
+      })
+
+    if (uploadError) {
+      console.error('Error uploading avatar:', uploadError)
+      return { success: false, error: uploadError.message }
+    }
+
+    // Get public URL
+    const { data: { publicUrl } } = supabase.storage
+      .from('user-assets')
+      .getPublicUrl(filePath)
+
+    return { success: true, url: publicUrl }
+  } catch (error) {
+    console.error('Unexpected error uploading avatar:', error)
+    return { success: false, error: error.message }
+  }
+}
+
+/**
+ * Mark profile setup as completed
+ * @param {string} userId - User ID
+ * @returns {Promise<{success: boolean, error?: string}>}
+ */
+export async function markProfileSetupComplete(userId) {
+  try {
+    const { error } = await supabase
+      .from('user_profiles')
+      .update({ profile_setup_completed: true })
+      .eq('user_id', userId)
+
+    if (error) {
+      console.error('Error marking profile setup complete:', error)
+      return { success: false, error: error.message }
+    }
+
+    return { success: true }
+  } catch (error) {
+    console.error('Unexpected error:', error)
+    return { success: false, error: error.message }
+  }
+}
+
+/**
+ * Dismiss profile setup reminder
+ * @param {string} userId - User ID
+ * @returns {Promise<{success: boolean, error?: string}>}
+ */
+export async function dismissProfileSetup(userId) {
+  try {
+    const { error } = await supabase
+      .from('user_profiles')
+      .update({ profile_setup_dismissed_at: new Date().toISOString() })
+      .eq('user_id', userId)
+
+    if (error) {
+      console.error('Error dismissing profile setup:', error)
+      return { success: false, error: error.message }
+    }
+
+    return { success: true }
+  } catch (error) {
+    console.error('Unexpected error:', error)
+    return { success: false, error: error.message }
   }
 }

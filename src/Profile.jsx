@@ -1,12 +1,16 @@
 import './Profile.css'
 import logo from './assets/17F007DC-F981-4891-AED4-6F81382D4181.PNG'
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from './contexts/AuthContext'
+import { loadUserProfile, saveUserProfile, uploadAvatar, markProfileSetupComplete } from './lib/profileApi'
+import UserAvatar from './components/UserAvatar'
 
 const Profile = () => {
   const [activeSection, setActiveSection] = useState('profile')
   const [isEditing, setIsEditing] = useState(false)
+  const [uploading, setUploading] = useState(false)
+  const fileInputRef = useRef(null)
   const navigate = useNavigate()
   const { user, signOut } = useAuth()
 
@@ -17,6 +21,7 @@ const Profile = () => {
     company: 'CloLabs Inc.',
     role: 'Automation Engineer',
     bio: 'Passionate about workflow automation and AI integration.',
+    avatarUrl: null,
   })
 
   const [preferences, setPreferences] = useState({
@@ -28,6 +33,37 @@ const Profile = () => {
     language: 'English',
     timezone: 'UTC-5 (Eastern Time)',
   })
+
+  useEffect(() => {
+    if (user?.id) {
+      loadProfile();
+    }
+  }, [user?.id]);
+
+  const loadProfile = async () => {
+    const result = await loadUserProfile(user.id);
+    if (result.success && result.data) {
+      setProfileData({
+        name: result.data.name || user?.user_metadata?.full_name || 'John Doe',
+        email: user?.email || 'john.doe@example.com',
+        phone: result.data.phone || '+1 (555) 123-4567',
+        company: result.data.company || 'CloLabs Inc.',
+        role: result.data.role || 'Automation Engineer',
+        bio: result.data.bio || 'Passionate about workflow automation and AI integration.',
+        avatarUrl: result.data.avatar_url,
+      });
+
+      setPreferences({
+        emailNotifications: result.data.email_notifications ?? true,
+        pushNotifications: result.data.push_notifications ?? false,
+        weeklyReport: result.data.weekly_report ?? true,
+        darkMode: false,
+        autoSave: result.data.auto_save ?? true,
+        language: result.data.language || 'English',
+        timezone: result.data.timezone || 'UTC-5 (Eastern Time)',
+      });
+    }
+  };
 
   const handleLogout = async () => {
     await signOut()
@@ -49,10 +85,66 @@ const Profile = () => {
     setPreferences({ ...preferences, [field]: value })
   }
 
-  const handleSaveChanges = () => {
+  const handleAvatarClick = () => {
+    if (isEditing) {
+      fileInputRef.current?.click()
+    }
+  }
+
+  const handleAvatarChange = async (e) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      alert('Please select an image file')
+      return
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      alert('Image size should be less than 5MB')
+      return
+    }
+
+    setUploading(true)
+    const result = await uploadAvatar(user.id, file)
+    
+    if (result.success) {
+      setProfileData({ ...profileData, avatarUrl: result.url })
+    } else {
+      alert('Failed to upload avatar: ' + result.error)
+    }
+    
+    setUploading(false)
+  }
+
+  const handleSaveChanges = async () => {
     setIsEditing(false)
-    // TODO: Save to Supabase
-    console.log('Saving profile:', profileData)
+    
+    const result = await saveUserProfile(user.id, {
+      name: profileData.name,
+      phone: profileData.phone,
+      company: profileData.company,
+      role: profileData.role,
+      bio: profileData.bio,
+      avatarUrl: profileData.avatarUrl,
+      emailNotifications: preferences.emailNotifications,
+      pushNotifications: preferences.pushNotifications,
+      weeklyReport: preferences.weeklyReport,
+      autoSave: preferences.autoSave,
+      language: preferences.language,
+      timezone: preferences.timezone
+    })
+    
+    if (result.success) {
+      console.log('Profile saved successfully')
+      // Mark profile setup as complete if this is first save
+      await markProfileSetupComplete(user.id)
+    } else {
+      console.error('Error saving profile:', result.error)
+      alert('Failed to save profile: ' + result.error)
+    }
   }
 
   return (
@@ -137,9 +229,12 @@ const Profile = () => {
             <button className="action-button">
               <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a6 6 0 0 0-6 6c0 7-3 9-3 9h18s-3-2-3-9a6 6 0 0 0-6-6z"/><path d="M13 17v1a1 1 0 0 1-1 1h0a1 1 0 0 1-1-1v-1"/></svg>
             </button>
-            <div className="profile-button" onClick={() => navigate('/profile')}>
-              <img src="/src/assets/female.jpg" alt="Profile" className="profile-image" />
-            </div>
+            <UserAvatar 
+              name={profileData.name}
+              avatarUrl={profileData.avatarUrl}
+              size="medium"
+              onClick={() => navigate('/profile')}
+            />
           </div>
         </div>
 
@@ -173,15 +268,26 @@ const Profile = () => {
               
               <div className="profile-card-body">
                 <div className="profile-avatar-section">
-                  <div className="large-profile-avatar">
-                    <img src="/src/assets/female.jpg" alt="Profile" className="avatar-img" />
-                  </div>
+                  <UserAvatar 
+                    name={profileData.name}
+                    avatarUrl={profileData.avatarUrl}
+                    size="large"
+                    onClick={handleAvatarClick}
+                    className={isEditing ? 'editable' : ''}
+                  />
+                  <input 
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    style={{ display: 'none' }}
+                    onChange={handleAvatarChange}
+                  />
                   {isEditing && (
-                    <button className="change-avatar-btn">
+                    <button className="change-avatar-btn" onClick={handleAvatarClick} disabled={uploading}>
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/>
                       </svg>
-                      Change Photo
+                      {uploading ? 'Uploading...' : 'Change Photo'}
                     </button>
                   )}
                 </div>

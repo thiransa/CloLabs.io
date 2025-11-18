@@ -5,10 +5,12 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from './contexts/AuthContext'
 import { listUserWorkflows, listTemplates, deleteWorkflowFromSupabase } from './lib/workflowApi'
 import { fetchUserIntegrations, createIntegration, deleteIntegration, toggleIntegrationStatus } from './lib/integrationsApi'
-import { loadUserProfile, saveUserProfile } from './lib/profileApi'
+import { loadUserProfile, saveUserProfile, dismissProfileSetup, markProfileSetupComplete } from './lib/profileApi'
 import { generateWorkflow } from './lib/aiAutoBuildApi'
 import { getUserCredits } from './lib/creditsApi'
 import TemplatePreviewModal from './components/TemplatePreviewModal'
+import ProfileSetupModal from './components/ProfileSetupModal'
+import UserAvatar from './components/UserAvatar'
 
 // Helper function to mask sensitive URL parts
 const maskUrl = (url) => {
@@ -82,6 +84,10 @@ const Dashboard = () => {
   const [loadingCredits, setLoadingCredits] = useState(false)
   const [creditsError, setCreditsError] = useState(null)
 
+  // Profile setup modal state
+  const [showProfileSetup, setShowProfileSetup] = useState(false)
+  const [avatarUrl, setAvatarUrl] = useState(null)
+
   // Load user profile on mount
   useEffect(() => {
     if (user?.id) {
@@ -128,6 +134,21 @@ const Dashboard = () => {
         language: result.data.language || 'English',
         timezone: result.data.timezone || 'UTC-5 (Eastern Time)'
       });
+
+      // Set avatar URL
+      setAvatarUrl(result.data.avatar_url);
+
+      // ONLY show modal if profile setup is explicitly NOT completed
+      // If profile_setup_completed is true, never show the modal
+      if (result.data.profile_setup_completed === false || result.data.profile_setup_completed === null) {
+        // Also check if they haven't dismissed it
+        if (!result.data.profile_setup_dismissed_at) {
+          setTimeout(() => setShowProfileSetup(true), 1500);
+        }
+      }
+    } else if (result.success && !result.data) {
+      // Brand new user with no profile record at all - show setup modal
+      setTimeout(() => setShowProfileSetup(true), 1500);
     }
   };
 
@@ -135,16 +156,27 @@ const Dashboard = () => {
     setLoadingCredits(true);
     setCreditsError(null);
     
-    const result = await getUserCredits();
-    
-    if (result.error) {
-      console.error('Error loading credits:', result.error);
-      setCreditsError(result.error);
-    } else if (result.data) {
-      setCredits(result.data);
+    try {
+      const result = await getUserCredits();
+      
+      console.log('[Dashboard] Credits result:', result);
+      
+      if (result.error) {
+        console.error('[Dashboard] Error loading credits:', result.error);
+        setCreditsError(result.error);
+      } else if (result.data) {
+        console.log('[Dashboard] Credits loaded:', result.data);
+        setCredits(result.data);
+      } else {
+        console.warn('[Dashboard] No credits data returned');
+        setCreditsError('No credits data available');
+      }
+    } catch (error) {
+      console.error('[Dashboard] Exception loading credits:', error);
+      setCreditsError(error.message || 'Failed to load credits');
+    } finally {
+      setLoadingCredits(false);
     }
-    
-    setLoadingCredits(false);
   };
 
 
@@ -521,13 +553,17 @@ const Dashboard = () => {
     try {
       console.log('[Dashboard] Generating workflow from prompt:', trimmedPrompt);
       
-      // Generate workflow using AI
+      // Generate workflow using AI (this will check credits and deduct automatically)
       const result = await generateWorkflow(trimmedPrompt, {
         model: 'gpt-4-turbo-preview'
       });
 
       if (result && result.workflow) {
         console.log('[Dashboard] Workflow generated successfully:', result.workflow);
+        console.log('[Dashboard] Credits remaining:', result.creditsRemaining);
+        
+        // Reload credits to show updated count
+        loadCredits();
         
         // Navigate to Builder with the generated workflow
         // Pass it as state so Builder can load it
@@ -547,7 +583,13 @@ const Dashboard = () => {
       }
     } catch (error) {
       console.error('[Dashboard] Workflow generation failed:', error);
-      setPromptError(error.message || 'Failed to generate workflow. Please try again.');
+      
+      // Check if it's a credit error and show helpful message
+      if (error.message && error.message.includes('Insufficient credits')) {
+        setPromptError(`⚠️ ${error.message}`);
+      } else {
+        setPromptError(error.message || 'Failed to generate workflow. Please try again.');
+      }
     } finally {
       setGeneratingWorkflow(false);
     }
@@ -692,9 +734,12 @@ const Dashboard = () => {
             <button className="action-button">
               <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a6 6 0 0 0-6 6c0 7-3 9-3 9h18s-3-2-3-9a6 6 0 0 0-6-6z"/><path d="M13 17v1a1 1 0 0 1-1 1h0a1 1 0 0 1-1-1v-1"/></svg>
             </button>
-            <div className="profile-button" onClick={() => setActiveSection('settings')} style={{cursor: 'pointer'}}>
-              <img src="/src/assets/female.jpg" alt="Profile" className="profile-image" />
-            </div>
+            <UserAvatar 
+              name={profileData.name}
+              avatarUrl={avatarUrl}
+              size="medium"
+              onClick={() => setActiveSection('settings')}
+            />
           </div>
         </div>
         <div className="dashboard-main-content">
@@ -1526,6 +1571,20 @@ const Dashboard = () => {
           </div>
         </div>
       )}
+
+      <ProfileSetupModal 
+        isOpen={showProfileSetup}
+        onClose={() => setShowProfileSetup(false)}
+        onRemindLater={async () => {
+          // Mark as dismissed AND completed so it never shows again
+          await dismissProfileSetup(user.id);
+          await markProfileSetupComplete(user.id);
+          setShowProfileSetup(false);
+        }}
+        onGoToSettings={() => {
+          setActiveSection('settings');
+        }}
+      />
     </div>
   )
 }
