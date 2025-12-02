@@ -10,6 +10,7 @@ import { useAuth } from './contexts/AuthContext';
 import { saveWorkflowToSupabase, loadWorkflow } from './lib/workflowApi.js';
 import { fetchUserIntegrations } from './lib/integrationsApi.js';
 import { simulateWorkflow } from './lib/simulationApi.js';
+import { executeWorkflow, subscribeToExecution } from './lib/executionApi.js';
 import { saveWorkflowRun } from './lib/runApi.js';
 import SimulationLogPanel from './components/SimulationLogPanel.jsx';
 import RunHistory from './components/RunHistory.jsx';
@@ -66,6 +67,13 @@ const Builder = () => {
   const [simulationSummary, setSimulationSummary] = useState(null);
   const [isSimulating, setIsSimulating] = useState(false);
   const [highlightedNodeId, setHighlightedNodeId] = useState(null);
+
+  // Live execution state
+  const [isExecuting, setIsExecuting] = useState(false);
+  const [executionId, setExecutionId] = useState(null);
+  const [executionTimeline, setExecutionTimeline] = useState(null);
+  const [executionSummary, setExecutionSummary] = useState(null);
+  const [executionSubscription, setExecutionSubscription] = useState(null);
 
   // Share modal state
   const [showShareModal, setShowShareModal] = useState(false);
@@ -643,6 +651,144 @@ const Builder = () => {
       setIsSimulating(false);
     }
   };
+
+  // Execute workflow in production mode (live run)
+  const handleExecuteWorkflow = async () => {
+    if (!currentWorkflow || !currentWorkflow.nodes || currentWorkflow.nodes.length === 0) {
+      alert('No nodes in workflow to execute');
+      return;
+    }
+
+    // Validate webhook nodes before execution
+    const webhookNodes = currentWorkflow.nodes.filter(node => 
+      node.data?.config?.actionType === 'Webhook'
+    );
+    
+    for (const node of webhookNodes) {
+      const config = node.data?.config;
+      
+      if (config?.customWebhookUrlError) {
+        alert(`Cannot execute: Node "${node.label}" has an invalid webhook URL. ${config.customWebhookUrlError}`);
+        setSelectedNodeId(node.id);
+        return;
+      }
+      
+      if (config?.customWebhookUrl) {
+        const url = config.customWebhookUrl.trim();
+        if (url && !url.startsWith('http://') && !url.startsWith('https://')) {
+          alert(`Cannot execute: Node "${node.label}" has an invalid webhook URL. Must start with http:// or https://`);
+          setSelectedNodeId(node.id);
+          return;
+        }
+      }
+      
+      if (config?.integrationId) {
+        const integration = userWebhooks.find(w => w.id === config.integrationId);
+        if (!integration) {
+          alert(`Cannot execute: Node "${node.label}" references a deleted webhook integration. Please select a valid webhook or paste a custom URL.`);
+          setSelectedNodeId(node.id);
+          return;
+        }
+      }
+      
+      if (!config?.customWebhookUrl && !config?.integrationId && !config?.selectedWebhookId) {
+        alert(`Cannot execute: Node "${node.label}" has no webhook URL configured. Please select a saved webhook or paste a custom URL.`);
+        setSelectedNodeId(node.id);
+        return;
+      }
+    }
+
+    console.log('[Builder] Starting live workflow execution...');
+    setIsExecuting(true);
+    setExecutionTimeline(null);
+    setExecutionSummary(null);
+    setExecutionId(null);
+    
+    // Prepare workflow model
+    const workflowModel = {
+      nodes: currentWorkflow.nodes.map(node => {
+        let actionType = node.data?.config?.actionType;
+        let webhookUrl = node.data?.config?.webhookUrl || node.data?.config?.customWebhookUrl;
+        
+        if (actionType === 'Webhook' && node.data?.config?.selectedWebhookId) {
+          const webhook = userWebhooks.find(w => w.id === node.data.config.selectedWebhookId);
+          if (webhook?.type === 'slack') {
+            actionType = 'slack';
+            webhookUrl = webhook.id;
+          }
+        }
+        
+        return {
+          id: node.id,
+          type: node.type,
+          data: {
+            label: node.label,
+            actionType: actionType,
+            webhookUrl: webhookUrl,
+            prompt: node.data?.config?.prompt,
+            condition: node.data?.config?.condition,
+            ...node.data
+          }
+        };
+      }),
+      edges: currentWorkflow.connections.map(conn => ({
+        id: conn.id,
+        source: String(conn.from),
+        target: String(conn.to)
+      }))
+    };
+    
+    // Input payload
+    const inputPayload = {
+      workflowId: currentWorkflow.supabaseId || currentWorkflow.id,
+      workflowName: currentWorkflow.name,
+      timestamp: new Date().toISOString(),
+      triggerType: 'manual',
+    };
+    
+    try {
+      const result = await executeWorkflow(workflowModel, {
+        inputPayload,
+        workflowId: currentWorkflow.supabaseId,
+        triggerType: 'manual',
+        executionMode: 'production',
+      });
+      
+      console.log('[Builder] Execution completed:', result.executionId, '-', result.status);
+      
+      setExecutionId(result.executionId);
+      setExecutionTimeline(result.timeline);
+      setExecutionSummary(result.summary);
+      
+      // Animate through timeline
+      for (let i = 0; i < result.timeline.length; i++) {
+        const entry = result.timeline[i];
+        setHighlightedNodeId(entry.nodeId);
+        await new Promise(resolve => setTimeout(resolve, 300));
+      }
+      
+      setHighlightedNodeId(null);
+      
+      if (result.status === 'failed') {
+        alert(`Execution completed with errors. Check the timeline for details.`);
+      }
+      
+    } catch (err) {
+      console.error('[Builder] Execution error:', err);
+      alert(`Execution failed: ${err.message}`);
+    } finally {
+      setIsExecuting(false);
+    }
+  };
+
+  // Cleanup execution subscription on unmount
+  useEffect(() => {
+    return () => {
+      if (executionSubscription) {
+        executionSubscription();
+      }
+    };
+  }, [executionSubscription]);
 
 
   // Get current workflow data
@@ -1822,17 +1968,71 @@ const Builder = () => {
                     <Play size={16} />
                   </div>
                   <div>
-                    <h4 className="test-title">Ready to Test</h4>
-                    <p className="test-description">Run your workflow to see if everything works correctly.</p>
+                    <h4 className="test-title">Test Your Workflow</h4>
+                    <p className="test-description">Simulate or execute your workflow to verify it works correctly.</p>
                   </div>
                 </div>
-                <button 
-                  className="run-test-button"
-                  onClick={handleSimulateWorkflow}
-                >
-                  <Play size={18} />
-                  <span>Run Test</span>
-                </button>
+                
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                  <button 
+                    className="run-test-button"
+                    onClick={handleSimulateWorkflow}
+                    disabled={isSimulating || isExecuting}
+                    style={{ 
+                      background: isSimulating ? '#9ca3af' : '#3b82f6',
+                      cursor: (isSimulating || isExecuting) ? 'not-allowed' : 'pointer'
+                    }}
+                  >
+                    <Play size={18} />
+                    <span>{isSimulating ? 'Simulating...' : 'Simulate (Test Mode)'}</span>
+                  </button>
+                  
+                  <button 
+                    className="run-test-button"
+                    onClick={handleExecuteWorkflow}
+                    disabled={isSimulating || isExecuting}
+                    style={{ 
+                      background: isExecuting ? '#9ca3af' : '#10b981',
+                      cursor: (isSimulating || isExecuting) ? 'not-allowed' : 'pointer'
+                    }}
+                  >
+                    <Zap size={18} />
+                    <span>{isExecuting ? 'Executing...' : 'Execute (Live Run)'}</span>
+                  </button>
+                </div>
+                
+                {(simulationSummary || executionSummary) && (
+                  <div style={{ 
+                    marginTop: '16px', 
+                    padding: '12px', 
+                    background: '#f3f4f6', 
+                    borderRadius: '8px',
+                    fontSize: '13px'
+                  }}>
+                    <div style={{ fontWeight: '600', marginBottom: '8px', color: '#374151' }}>
+                      Last Run Summary
+                    </div>
+                    {simulationSummary && (
+                      <div style={{ color: '#6b7280' }}>
+                        <div>Mode: Simulation</div>
+                        <div>Status: {simulationSummary.status}</div>
+                        <div>Nodes: {simulationSummary.totalNodes}</div>
+                        <div>Duration: {simulationSummary.totalDuration}ms</div>
+                      </div>
+                    )}
+                    {executionSummary && (
+                      <div style={{ color: '#6b7280' }}>
+                        <div>Mode: Live Execution</div>
+                        <div>Status: {executionSummary.status || 'completed'}</div>
+                        <div>Nodes: {executionSummary.nodesCompleted}/{executionSummary.totalNodes}</div>
+                        <div>Duration: {executionSummary.duration}ms</div>
+                        {executionSummary.creditsConsumed > 0 && (
+                          <div>Credits Used: {executionSummary.creditsConsumed}</div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             )}
 
@@ -1846,14 +2046,19 @@ const Builder = () => {
         </div>
       </div>
 
-      {/* Simulation Log Panel */}
+      {/* Simulation/Execution Log Panel */}
       <SimulationLogPanel 
-        timeline={simulationTimeline}
-        summary={simulationSummary}
-        isRunning={isSimulating}
+        timeline={executionTimeline || simulationTimeline}
+        summary={executionSummary || simulationSummary}
+        isRunning={isExecuting || isSimulating}
+        executionMode={executionTimeline ? 'live' : 'simulation'}
+        executionId={executionId}
         onClose={() => {
           setSimulationTimeline(null);
           setSimulationSummary(null);
+          setExecutionTimeline(null);
+          setExecutionSummary(null);
+          setExecutionId(null);
         }}
       />
 

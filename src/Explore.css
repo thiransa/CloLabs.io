@@ -2,13 +2,19 @@
 
 .explore-container {
   min-height: 100vh;
-  background: linear-gradient(to bottom, #0d2b45 0%, #203c5b 50%, #2b1d3b 100%);
+  width: 100%;
+  background:
+    radial-gradient(circle at 15% 10%, rgba(167, 139, 250, 0.28), transparent 55%),
+    radial-gradient(circle at 85% 0%, rgba(138, 180, 248, 0.2), transparent 50%),
+    linear-gradient(180deg, var(--clo-deep, #05070f) 0%, var(--clo-navy, #070b17) 45%, #030408 100%);
   background-attachment: fixed;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 120px 20px 0px 20px;
   position: relative;
+  overflow: hidden;
+  isolation: isolate;
 }
 
 .explore-content {
@@ -40,6 +46,19 @@
 
 .nav-text:hover {
   color: rgba(255, 255, 255, 0.9);
+}
+
+/* Tone down default blue focus ring on buttons while keeping accessibility */
+.explore-container button {
+  outline: none;
+  box-shadow: none;
+}
+
+.explore-container button:hover,
+.explore-container button:focus,
+.explore-container button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(180, 180, 180, 0.55);
 }
 
 .signup-button {
@@ -118,15 +137,10 @@
 }
 
 .step-card {
-  background: linear-gradient(
-    135deg,
-    rgba(13, 43, 69, 0.15) 0%,
-    rgba(32, 60, 91, 0.25) 50%,
-    rgba(43, 29, 59, 0.15) 100%
-  );
+  background: linear-gradient(145deg, rgba(7, 10, 18, 0.92), rgba(17, 22, 36, 0.95));
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
   padding: 40px 30px;
   text-align: center;
   transition: all 0.4s ease;
@@ -155,7 +169,7 @@
 .step-card:hover {
   transform: translateY(-10px);
   border-color: rgba(255, 255, 255, 0.2);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 30px 70px rgba(3, 4, 8, 0.55);
 }
 
 .step-card:hover::before {

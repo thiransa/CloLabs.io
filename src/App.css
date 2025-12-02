@@ -1,17 +1,43 @@
 @import url('https://fonts.googleapis.com/css2?family=Alan+Sans:wght@300..900&family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
 
-.gradient-background {
-  /* Full viewport dimensions with extra height for scrolling */
-  width: 100vw;
-  min-height: 100vh;
+/* ============================================================================
+   CLOLABS COLOR PALETTE - CSS Variables
+   ============================================================================ */
+:root {
+  --clolabs-deep: #0F1320;
+  --clolabs-navy: #1A1F2E;
+  --clolabs-purple: #A78BFA;
+  --clolabs-lightblue: #8AB4F8;
+  --clolabs-text-light: #E2E8F0;
+  --clolabs-soft-white: #fdf8ff;
+  --clolabs-bg: #05070f;
+  --clolabs-bg-alt: #070b17;
+  --clolabs-surface: rgba(10, 14, 26, 0.92);
+  --clolabs-surface-soft: rgba(15, 19, 32, 0.78);
+  --clolabs-border: rgba(255, 255, 255, 0.08);
+  --clolabs-border-strong: rgba(255, 255, 255, 0.18);
+  --clolabs-muted: rgba(226, 232, 240, 0.7);
+  --clolabs-card-shadow: 0 30px 80px rgba(3, 4, 8, 0.65);
+  --section-radius: 32px;
   
-  /* Three-color linear gradient */
-  background: linear-gradient(
-    to bottom,
-    #0d2b45 0%,     /* Top: dark navy blue */
-    #203c5b 50%,    /* Middle: deep teal blue */
-    #2b1d3b 100%    /* Bottom: dark purple with hint of magenta */
-  );
+  --tunnel-halo: rgba(167, 139, 250, 0.35);
+  --tunnel-ambient: rgba(138, 180, 248, 0.28);
+  --tunnel-core: rgba(255, 255, 255, 0.9);
+  --tunnel-shadow: rgba(10, 13, 32, 0.85);
+  
+  /* Typography scale */
+  --hero-headline-size: 4.5rem;     /* 72px */
+  --hero-subtext-size: 1.375rem;    /* 22px */
+  --hero-brand-size: 2.5rem;        /* 40px */
+}
+
+.gradient-background {
+  width: 100%;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 15% 10%, rgba(167, 139, 250, 0.25), transparent 55%),
+    radial-gradient(circle at 85% 0%, rgba(138, 180, 248, 0.18), transparent 50%),
+    linear-gradient(180deg, var(--clolabs-bg) 0%, var(--clolabs-bg-alt) 45%, #030408 100%);
   
   /* Ensure smooth rendering */
   background-attachment: fixed;
@@ -24,179 +50,576 @@
   overflow-y: auto;
   overflow-x: hidden;
   
-  /* Position relative for absolute positioning of button */
+  /* Position relative for absolute positioning */
   position: relative;
 }
 
-.signup-button {
-  /* Position in upper right corner */
+/* ============================================================================
+   HERO SECTION - Tunnel Gradient Layout
+   ============================================================================ */
+
+.hero-section {
+  position: relative;
+  width: 100%;
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 4rem 0;
+}
+
+/* ============================================================================
+   PURPLE TUNNEL GRADIENT - Expanding from Center (Reference Image Style)
+   Multi-layered blurred shapes creating depth and intense luminosity
+   ============================================================================ */
+.hero-gradient {
   position: absolute;
-  top: 5px !important;
-  right: 14px !important;
-  
-  /* Button styling */
-  padding: 8px 16px;
-  font-size: 14px;
-  font-weight: 700;
-  color: rgb(179, 175, 175);
-  
-  /* Slightly gray transparent background */
-  background-color: rgba(128, 128, 128, 0.3);
-  
-  /* Subtle border */
-  border: none solid rgba(255, 255, 255, 0.2);
-  border-radius: 20px;
-  
-  /* Smooth transitions */
-  transition: all 0.3s ease;
-  
-  /* Cursor pointer */
-  cursor: pointer;
-  
-  /* Font family */
-  font-family: inherit;
-}
-
-.signup-button:hover {
-  /* Slightly more opaque on hover */
-  background-color: rgba(143, 134, 134, 0.5);
-  border-color: rgba(255, 255, 255, 0.4);
-  transform: translateY(-1px);
-}
-
-.signup-button:active {
-  transform: translateY(0);
-}
-
-.nav-text {
-  /* Position to the left of the signup button */
-  position: absolute;
-  top: 32px !important; /* Moved down a few pixels for better alignment */
-  right: 130px !important; /* Positioned to the left of the button */
-  
-  /* Text styling to match the button */
-  font-size: 14px;
-  font-weight: 700;
-  color: rgb(179, 175, 175);
-  font-family: inherit;
-  text-decoration: none;
-  
-  /* Align vertically with the button */
-  line-height: 1;
-  
-  /* Subtle hover effect */
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.nav-text:hover {
-  color: rgba(255, 255, 255, 0.9);
-}
-
-.logo {
-  /* Position behind the CloLabs text */
-  position: absolute;
-  top: 30%; /* Moved down further */
-  left: 10.5%; /* Slightly to the left of the CloLabs text */
-  
-  /* Larger logo size for background effect */
-  height: 58px;
-  width: auto;
-  
-  /* Behind the text */
+  inset: 0;
+  pointer-events: none;
   z-index: 1;
-  /* opacity: 0.3; /* Semi-transparent for background effect */
-  
-  /* Smooth transitions */
-  transition: all 0.3s ease;
-  cursor: pointer;
+  overflow: hidden;
 }
 
-.logo:hover {
+.hero-gradient-layer {
+  position: absolute;
+  pointer-events: none;
+  filter: blur(90px);
+  transform: translate(-50%, -50%);
+  left: 50%;
+}
+
+.hero-gradient-ambient {
+  top: 50%;
+  width: 160%;
+  height: 160%;
+  background: radial-gradient(circle, var(--tunnel-ambient) 0%, transparent 65%);
+  filter: blur(130px);
+  opacity: 0.8;
+}
+
+.hero-curve {
+  width: 170%;
+  height: 90%;
+  border-radius: 50% / 70%;
+  background: radial-gradient(
+    ellipse at center,
+    var(--tunnel-halo) 25%,
+    rgba(15, 19, 32, 0) 70%
+  );
+  filter: blur(110px);
+  opacity: 0.85;
+}
+
+.hero-curve-top {
+  top: 15%;
+  transform: translate(-50%, -50%) rotate(180deg);
+}
+
+.hero-curve-bottom {
+  top: 85%;
+}
+
+.hero-core-light {
+  top: 50%;
+  width: 65%;
+  height: 45%;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--tunnel-core) 0%, rgba(167, 139, 250, 0.15) 60%, transparent 75%);
+  filter: blur(100px);
+  opacity: 0.95;
+}
+
+.hero-halo-glow {
+  top: 50%;
+  width: 130%;
+  height: 60%;
+  background: radial-gradient(ellipse at center, rgba(167, 139, 250, 0.35) 0%, rgba(15, 19, 32, 0) 70%);
+  filter: blur(120px);
+  opacity: 0.7;
+  animation: gentle-shimmer 14s ease-in-out infinite;
+}
+
+@keyframes gentle-shimmer {
+  0%, 100% {
+    opacity: 0.4;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: translate(-50%, -50%) scale(1.04);
+  }
+}
+
+/* ============================================================================
+   HERO CONTENT - Centered Layout
+   ============================================================================ */
+.hero-content-center {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 1400px;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-content-inner {
+  width: 100%;
+  max-width: 1000px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Brand Identity */
+.hero-brand-identity {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+  opacity: 0;
+  animation: fade-slide-up 0.8s ease-out 0.2s forwards;
+}
+
+.brand-logo-hero {
+  height: 52px;
+  width: auto;
+  transition: transform 0.3s ease;
+}
+
+.brand-logo-hero:hover {
   transform: scale(1.05);
-  opacity: 0.9;
 }
 
-.logo-text {
-  /* Position closer to center but not exactly centered */
-  position: absolute;
-  top: 31%; /* Moved down further */
-  left: 15.5%; /* Moved right from 12% */
-  
-  /* Text styling to match the signup button color */
-  font-size: 36px; /* Quite bigger size */
+.brand-name-hero {
+  font-size: var(--hero-brand-size);
   font-weight: 700;
-  color: rgb(179, 175, 175); /* Same color as signup button */
+  color: var(--clolabs-text-light);
   font-family: "Bricolage Grotesque", sans-serif;
-  font-optical-sizing: auto;
-  
-  /* Ensure text appears above logo */
-  z-index: 2;
-  
-  /* Styling */
-  line-height: 1;
   letter-spacing: 0.5px;
 }
 
-.start-your-text {
-  /* Position right below the Clolabs text with same alignment */
-  position: absolute;
-  top: 37.5%; /* Moved down further */
-  left: 12%; /* Same left alignment as Clolabs */
-  
-  /* Text styling - bigger and white */
-  font-size: 64px; /* Made bigger from 48px */
-  font-weight: 700;
-  color: white; /* White color */
+/* Main Headline - Bold, Modern, Centered */
+.hero-main-headline {
   font-family: "Montserrat", sans-serif;
-  
-  /* Styling */
-  line-height: 1.2;
-  letter-spacing: 0.5px;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  margin: 0 0 2rem 0;
+  opacity: 0;
+  animation: fade-slide-up 0.8s ease-out 0.4s forwards;
 }
 
-.ai-text {
-  /* Position right below the Start Your text with same alignment */
-  position: absolute;
-  top: 44.5%; /* Moved down further */
-  left: 12%; /* Same left alignment as other texts */
-  
-  /* Text styling - same size and color as Start Your */
-  font-size: 64px; /* Made bigger from 48px */
-  font-weight: 700;
-  color: white; /* Same white color */
-  font-family: "Montserrat", sans-serif;
-  
-  /* Styling */
-  line-height: 1.2;
-  letter-spacing: 0.5px;
+.headline-text-line {
+  display: block;
+  font-size: var(--hero-headline-size);
+  color: #ffffff;
+  text-shadow: 0 20px 80px rgba(15, 19, 32, 0.65), 0 0 25px rgba(167, 139, 250, 0.45);
 }
 
-.automation-text {
-  /* Position right below the AI text with same alignment */
-  position: absolute;
-  top: 51.5%; /* Moved down further */
-  left: 12%; /* Same left alignment as other texts */
-  
-  /* Text styling - same size but gradient color */
-  font-size: 64px; /* Made bigger from 48px */
-  font-weight: 700;
-  font-family: "Montserrat", sans-serif;
-  
-  /* Gradient color matching background theme */
+.headline-gradient-purple {
   background: linear-gradient(
     135deg,
-    #8fb3d4 0%,     /* Much lighter navy blue */
-    #9bc4e0 50%,    /* Much lighter teal blue */
-    #c4b3d4 100%    /* Much lighter purple with magenta */
+    var(--clolabs-lightblue) 0%,
+    var(--clolabs-purple) 55%,
+    #c084fc 100%
   );
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 40px rgba(167, 139, 250, 0.45));
+}
+
+/* Supporting Text */
+.hero-supporting-text {
+  font-size: var(--hero-subtext-size);
+  line-height: 1.7;
+  color: var(--clolabs-text-light);
+  opacity: 0;
+  margin: 0 0 3rem 0;
+  max-width: 700px;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  animation: fade-slide-up 0.8s ease-out 0.6s forwards;
+}
+
+/* CTA Buttons */
+.hero-cta-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  opacity: 0;
+  animation: fade-slide-up 0.8s ease-out 0.8s forwards;
+}
+
+.cta-button-primary {
+  padding: 1.125rem 3rem;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #ffffff;
+  background: linear-gradient(135deg, var(--clolabs-purple) 0%, var(--clolabs-lightblue) 100%);
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: "Bricolage Grotesque", sans-serif;
+  box-shadow: 
+    0 12px 40px rgba(167, 139, 250, 0.45),
+    0 4px 18px rgba(138, 180, 248, 0.25);
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-button-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.cta-button-primary:hover {
+  transform: translateY(-3px);
+  background: linear-gradient(135deg, #b794f4 0%, #a5d0ff 100%);
+  box-shadow: 
+    0 14px 46px rgba(167, 139, 250, 0.55),
+    0 8px 24px rgba(138, 180, 248, 0.35);
+}
+
+.cta-button-primary:hover::before {
+  left: 100%;
+}
+
+.cta-button-primary:active {
+  transform: translateY(-1px);
+}
+
+.cta-link-secondary {
+  font-size: 1rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.82);
+  text-decoration: none;
+  opacity: 1;
+  transition: all 0.3s ease;
+  font-family: "Inter", sans-serif;
+  position: relative;
+}
+
+.cta-link-secondary::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--clolabs-lightblue);
+  transition: width 0.3s ease;
+}
+
+.cta-link-secondary:hover {
+  opacity: 1;
+  color: white;
+}
+
+.cta-link-secondary:hover::after {
+  width: 100%;
+}
+
+/* Fade and slide up animation */
+@keyframes fade-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================================================
+   HEADER NAVIGATION (Top Right)
+   ============================================================================ */
+.hero-nav-header {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.nav-link-explore {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--clolabs-light-text);
+  font-family: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.nav-link-explore:hover {
+  color: white;
+}
+
+.nav-button-signup {
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--clolabs-light-text);
+  background-color: rgba(179, 175, 175, 0.1);
+  border: 1px solid rgba(179, 175, 175, 0.2);
+  border-radius: 20px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.nav-button-signup:hover {
+  background-color: rgba(179, 175, 175, 0.15);
+  color: rgba(255, 255, 255, 0.9);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(179, 175, 175, 0.1);
+}
+
+.nav-button-signup:active {
+  transform: translateY(0);
+}
+
+/* ============================================================================
+   RESPONSIVE DESIGN - Mobile Optimization
+   ============================================================================ */
+
+/* Tablet: 768px - 1024px */
+@media (max-width: 1024px) {
+  :root {
+    --hero-headline-size: 3.75rem;   /* 60px */
+    --hero-subtext-size: 1.25rem;    /* 20px */
+    --hero-brand-size: 2.25rem;      /* 36px */
+  }
   
-  /* Styling */
-  line-height: 1.2;
-  letter-spacing: 0.5px;
+  .hero-section {
+    height: 90vh;
+    min-height: 650px;
+  }
+  
+  .hero-content-center {
+    padding: 0 1.75rem;
+  }
+  
+  .brand-logo-hero {
+    height: 46px;
+  }
+  
+  .hero-nav-header {
+    top: 1.75rem;
+    right: 1.75rem;
+  }
+}
+
+/* Mobile: < 768px */
+@media (max-width: 768px) {
+  :root {
+    --hero-headline-size: 3rem;      /* 48px */
+    --hero-subtext-size: 1.125rem;   /* 18px */
+    --hero-brand-size: 2rem;         /* 32px */
+  }
+  
+  .hero-section {
+    height: 85vh;
+    min-height: 600px;
+  }
+  
+  .hero-content-center {
+    padding: 0 1.5rem;
+  }
+  
+  .hero-brand-identity {
+    margin-bottom: 2rem;
+  }
+  
+  .brand-logo-hero {
+    height: 40px;
+  }
+  
+  .hero-main-headline {
+    margin-bottom: 1.5rem;
+  }
+  
+  .hero-supporting-text {
+    font-size: 1.0625rem;
+    margin-bottom: 2.5rem;
+  }
+  
+  .cta-button-primary {
+    width: 100%;
+    max-width: 360px;
+    padding: 1rem 2.5rem;
+  }
+  
+  .hero-nav-header {
+    top: 1.5rem;
+    right: 1.5rem;
+    gap: 1rem;
+  }
+  
+  .nav-link-explore {
+    font-size: 0.875rem;
+  }
+  
+  .nav-button-signup {
+    font-size: 0.875rem;
+    padding: 0.5rem 1.25rem;
+  }
+  
+  /* Adjust tunnel gradient for mobile */
+  .tunnel-glow-outer {
+    width: 160%;
+    height: 130%;
+  }
+  
+  .tunnel-arc-mid {
+    width: 130%;
+    height: 110%;
+  }
+}
+
+/* Small Mobile: < 480px */
+@media (max-width: 480px) {
+  :root {
+    --hero-headline-size: 2.5rem;    /* 40px */
+    --hero-subtext-size: 1rem;       /* 16px */
+    --hero-brand-size: 1.75rem;      /* 28px */
+  }
+  
+  .hero-section {
+    height: auto;
+    min-height: 100vh;
+    padding: 5rem 0 3rem;
+  }
+  
+  .hero-content-center {
+    padding: 0 1.25rem;
+  }
+  
+  .hero-brand-identity {
+    margin-bottom: 1.75rem;
+    gap: 0.75rem;
+  }
+  
+  .brand-logo-hero {
+    height: 36px;
+  }
+  
+  .hero-main-headline {
+    margin-bottom: 1.25rem;
+  }
+  
+  .headline-text-line {
+    line-height: 1.15;
+  }
+  
+  .hero-supporting-text {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+  }
+  
+  .hero-cta-container {
+    width: 100%;
+    gap: 1rem;
+  }
+  
+  .cta-button-primary {
+    width: 100%;
+    max-width: 100%;
+    font-size: 1rem;
+    padding: 0.9375rem 2rem;
+  }
+  
+  .hero-nav-header {
+    top: 1.25rem;
+    right: 1.25rem;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.75rem;
+  }
+  
+  .nav-link-explore {
+    font-size: 0.8125rem;
+  }
+  
+  .nav-button-signup {
+    font-size: 0.8125rem;
+    padding: 0.5rem 1.125rem;
+  }
+  
+  /* Optimize tunnel gradient for small screens */
+  .tunnel-glow-outer {
+    width: 180%;
+    height: 140%;
+  }
+  
+  .tunnel-arc-mid {
+    width: 140%;
+    height: 110%;
+  }
+  
+  .tunnel-core-bright {
+    width: 100%;
+    height: 80%;
+  }
+}
+
+/* ============================================================================
+   LEGACY ELEMENT CLEANUP
+   Hide old absolute-positioned elements
+   ============================================================================ */
+.logo,
+.logo-text,
+.start-your-text,
+.ai-text,
+.automation-text,
+.description-text,
+.start-automating-button,
+.decorative-rings,
+.nav-text,
+.signup-button,
+.hero-content-wrapper,
+.hero-content-container,
+.hero-brand,
+.hero-logo,
+.hero-brand-name,
+.hero-headline,
+.hero-headline-line,
+.hero-headline-ai,
+.hero-headline-gradient,
+.hero-subtext,
+.hero-cta-group,
+.hero-cta-primary,
+.hero-cta-secondary,
+.tunnel-gradient-container,
+.tunnel-layer-1,
+.tunnel-layer-2,
+.tunnel-layer-3,
+.tunnel-core,
+.tunnel-shimmer {
+  display: none !important;
 }
 
 .description-text {
@@ -504,31 +927,20 @@
 }
 
 .footer {
-  /* Position relative to flow with content */
   position: relative;
   width: 100%;
-  
-  /* Flexbox for layout */
   display: flex;
   justify-content: space-between;
   align-items: center;
-  
-  /* Padding and background */
-  padding: 30px 40px;
-  background-color: rgba(0, 0, 0, 0.2);
-  
-  /* Border for visual separation */
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  
-  /* Typography */
-  color: rgba(255, 255, 255, 0.8);
+  padding: 36px clamp(1.5rem, 4vw, 4rem);
+  background: linear-gradient(145deg, rgba(6, 9, 16, 0.9), rgba(10, 14, 26, 0.95));
+  border-top: 1px solid var(--clolabs-border);
+  color: var(--clolabs-muted);
   font-size: 14px;
   font-family: inherit;
-  
-  /* Ensure it's above rings but below modals */
   z-index: 5;
   margin-top: 0;
-  clear: both;
+  box-shadow: 0 -20px 60px rgba(0, 0, 0, 0.45);
 }
 
 .footer-left {
@@ -561,7 +973,7 @@
 }
 
 .footer-link {
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--clolabs-muted);
   text-decoration: none;
   font-size: 14px;
   font-weight: 400;
@@ -569,11 +981,11 @@
 }
 
 .footer-link:hover {
-  color: white;
+  color: var(--clolabs-text-light);
 }
 
 .footer-copyright {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(226, 232, 240, 0.45);
   font-size: 12px;
   font-weight: 400;
 }
@@ -784,32 +1196,43 @@
 /* Common Section Styles */
 .landing-section {
   width: 100%;
-  padding: 80px 20px;
+  padding: clamp(3rem, 6vw, 6rem) clamp(1.5rem, 4vw, 4rem);
   position: relative;
   z-index: 10;
   background: transparent;
 }
 
+.landing-section:first-of-type {
+  margin-top: calc(-1 * clamp(2rem, 4vw, 3rem));
+  padding-top: clamp(2rem, 4vw, 3rem);
+}
+
 .section-container {
   max-width: 1200px;
   margin: 0 auto;
+  padding: clamp(2rem, 4vw, 3.5rem);
+  border-radius: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  backdrop-filter: none;
 }
 
 .section-title {
   font-size: 42px;
   font-weight: 700;
-  color: #b2b5b8 !important;
+  color: var(--clolabs-text-light) !important;
   text-align: center;
   margin-bottom: 24px;
   font-family: "Montserrat", sans-serif;
-  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  text-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
   letter-spacing: -0.5px;
   line-height: 1.2;
 }
 
 .section-description {
   font-size: 19px;
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--clolabs-muted);
   text-align: center;
   line-height: 1.7;
   max-width: 700px;
@@ -862,25 +1285,27 @@
 }
 
 .pain-points li {
-  background: rgba(255, 255, 255, 0.08);
+  background: linear-gradient(135deg, rgba(9, 12, 22, 0.9), rgba(18, 21, 36, 0.92));
   padding: 20px 26px;
   margin-bottom: 18px;
-  border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  border: 1px solid var(--clolabs-border);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 25px 60px rgba(3, 4, 8, 0.5);
+  color: var(--clolabs-muted);
 }
 
 .pain-points li:hover {
-  background: rgba(255, 255, 255, 0.12);
-  transform: translateX(5px);
-  border-color: rgba(255, 255, 255, 0.15);
+  background: linear-gradient(135deg, rgba(13, 16, 30, 0.95), rgba(26, 31, 46, 0.98));
+  transform: translateX(8px);
+  border-color: var(--clolabs-border-strong);
 }
 
 .pain-points li strong {
   display: block;
   margin-bottom: 8px;
   font-size: 18px;
-  color: #ffffff;
+  color: var(--clolabs-text-light);
   font-weight: 600;
 }
 
@@ -1029,7 +1454,15 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  padding: 0 20px;
+  padding: 20px;
+  border-radius: 28px;
+  background: radial-gradient(circle at top, rgba(138, 180, 248, 0.08), transparent 70%), var(--clolabs-surface);
+  border: 1px solid var(--clolabs-border);
+  box-shadow: var(--clolabs-card-shadow);
+  border-radius: 28px;
+  background: radial-gradient(circle at top, rgba(167, 139, 250, 0.08), transparent 70%), var(--clolabs-surface);
+  border: 1px solid var(--clolabs-border);
+  box-shadow: var(--clolabs-card-shadow);
 }
 
 .ai-orbit-illustration {
@@ -1214,12 +1647,12 @@
 
 .demo-media {
   position: relative;
-  border-radius: 28px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  padding: 8px;
-  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.35);
-  backdrop-filter: blur(12px);
+  border-radius: 32px;
+  background: linear-gradient(145deg, rgba(6, 9, 16, 0.9), rgba(14, 18, 30, 0.95));
+  border: 1px solid var(--clolabs-border);
+  padding: 12px;
+  box-shadow: var(--clolabs-card-shadow);
+  backdrop-filter: blur(20px);
   min-height: 400px;
 }
 
@@ -1236,9 +1669,9 @@
   width: 100%;
   height: 100%;
   display: block;
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.32);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.45);
   background: #040b16;
   object-fit: cover;
 }
@@ -1256,6 +1689,7 @@
   text-align: left;
   margin: 0 0 30px;
   max-width: 520px;
+  color: var(--clolabs-muted);
 }
 
 .demo-actions {
@@ -1277,26 +1711,26 @@
 }
 
 .demo-primary-button {
-  background: linear-gradient(135deg, #ffffff, #e8edf7);
-  color: #0d253f;
+  background: linear-gradient(135deg, var(--clolabs-purple), var(--clolabs-lightblue));
+  color: #05070f;
   border: none;
-  box-shadow: 0 12px 26px rgba(255, 255, 255, 0.2);
+  box-shadow: 0 18px 40px rgba(167, 139, 250, 0.4);
 }
 
 .demo-primary-button:hover {
   transform: translateY(-4px);
-  box-shadow: 0 18px 32px rgba(255, 255, 255, 0.25);
+  box-shadow: 0 24px 55px rgba(138, 180, 248, 0.4);
 }
 
 .demo-secondary-button {
-  background: rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  backdrop-filter: blur(6px);
+  background: transparent;
+  color: var(--clolabs-text-light);
+  border: 1px solid var(--clolabs-border);
+  backdrop-filter: blur(8px);
 }
 
 .demo-secondary-button:hover {
-  background: rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.08);
   transform: translateY(-2px);
 }
 
@@ -1536,44 +1970,46 @@
 }
 
 .feature-card {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 20px;
+  background: linear-gradient(145deg, rgba(7, 10, 18, 0.92), rgba(17, 22, 36, 0.95));
+  border: 1px solid var(--clolabs-border);
+  border-radius: 24px;
   padding: 36px 28px;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   text-align: center;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(14px);
+  box-shadow: var(--clolabs-card-shadow);
 }
 
 .feature-card:hover {
   transform: translateY(-8px);
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.25);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(145deg, rgba(10, 14, 26, 0.98), rgba(23, 28, 44, 0.98));
+  border-color: var(--clolabs-border-strong);
+  box-shadow: 0 30px 65px rgba(3, 4, 8, 0.65);
 }
 
 .feature-icon {
   width: 64px;
   height: 64px;
   margin: 0 auto 24px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08));
-  border-radius: 16px;
+  background: linear-gradient(135deg, var(--clolabs-purple), var(--clolabs-lightblue));
+  border-radius: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: #05070f;
   transition: all 0.3s ease;
+  box-shadow: 0 12px 30px rgba(167, 139, 250, 0.35);
 }
 
 .feature-card:hover .feature-icon {
-  transform: scale(1.1);
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.12));
+  transform: scale(1.07);
+  box-shadow: 0 18px 36px rgba(138, 180, 248, 0.38);
 }
 
 .feature-title {
   font-size: 21px;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--clolabs-text-light);
   margin-bottom: 12px;
   font-family: "Montserrat", sans-serif;
   letter-spacing: -0.3px;
@@ -1581,7 +2017,7 @@
 
 .feature-description {
   font-size: 16px;
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--clolabs-muted);
   line-height: 1.6;
   font-family: "Inter", sans-serif;
 }
@@ -1599,20 +2035,21 @@
 }
 
 .step-card {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 20px;
+  background: linear-gradient(145deg, rgba(8, 11, 20, 0.92), rgba(17, 22, 36, 0.96));
+  border: 1px solid var(--clolabs-border);
+  border-radius: 24px;
   padding: 36px;
   position: relative;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(14px);
+  box-shadow: var(--clolabs-card-shadow);
 }
 
 .step-card:hover {
-  transform: translateX(12px);
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.2);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+  transform: translateY(-6px);
+  background: linear-gradient(145deg, rgba(12, 16, 28, 0.98), rgba(23, 28, 46, 0.98));
+  border-color: var(--clolabs-border-strong);
+  box-shadow: 0 24px 60px rgba(3, 4, 8, 0.55);
 }
 
 .step-number {
@@ -1629,19 +2066,20 @@
 .step-icon {
   width: 54px;
   height: 54px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08));
-  border-radius: 14px;
+  background: linear-gradient(135deg, var(--clolabs-purple), var(--clolabs-lightblue));
+  border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: #05070f;
   margin-bottom: 20px;
+  box-shadow: 0 12px 30px rgba(167, 139, 250, 0.35);
 }
 
 .step-title {
   font-size: 23px;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--clolabs-text-light);
   margin-bottom: 12px;
   font-family: "Montserrat", sans-serif;
   letter-spacing: -0.3px;
@@ -1649,7 +2087,7 @@
 
 .step-description {
   font-size: 16px;
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--clolabs-muted);
   line-height: 1.7;
   font-family: "Inter", sans-serif;
 }
@@ -1691,15 +2129,15 @@
 .beta-email-input {
   width: 100%;
   padding: 18px 18px 18px 50px;
-  border: 2px solid rgba(255, 255, 255, 0.15);
-  border-radius: 16px;
-  background-color: rgba(255, 255, 255, 0.08);
-  color: white;
+  border: 1px solid var(--clolabs-border);
+  border-radius: 18px;
+  background-color: rgba(7, 10, 18, 0.85);
+  color: var(--clolabs-text-light);
   font-size: 16px;
   font-family: "Inter", sans-serif;
   transition: all 0.3s ease;
   box-sizing: border-box;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
 }
 
 .beta-email-input::placeholder {
@@ -1708,9 +2146,9 @@
 
 .beta-email-input:focus {
   outline: none;
-  border-color: rgba(255, 255, 255, 0.4);
-  background-color: rgba(255, 255, 255, 0.12);
-  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1);
+  border-color: var(--clolabs-border-strong);
+  background-color: rgba(11, 15, 26, 0.95);
+  box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.2);
 }
 
 .beta-email-input:disabled {
@@ -1719,10 +2157,10 @@
 }
 
 .beta-submit-button {
-  background-color: white;
-  color: #0d2b45;
+  background: linear-gradient(135deg, var(--clolabs-purple), var(--clolabs-lightblue));
+  color: #05070f;
   border: none;
-  border-radius: 16px;
+  border-radius: 18px;
   padding: 18px 36px;
   font-size: 16px;
   font-weight: 700;
@@ -1730,13 +2168,12 @@
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   width: 100%;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 20px 45px rgba(167, 139, 250, 0.35);
 }
 
 .beta-submit-button:hover:not(:disabled) {
-  background-color: #f8f8f8;
   transform: translateY(-3px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 24px 55px rgba(138, 180, 248, 0.4);
 }
 
 .beta-submit-button:disabled {
@@ -1751,18 +2188,19 @@
   font-size: 15px;
   font-family: "Inter", sans-serif;
   margin-top: 10px;
+  border: 1px solid var(--clolabs-border);
 }
 
 .beta-message.success {
-  background: rgba(34, 197, 94, 0.2);
+  background: rgba(34, 197, 94, 0.12);
   color: #86efac;
-  border: 1px solid rgba(34, 197, 94, 0.3);
+  border-color: rgba(34, 197, 94, 0.4);
 }
 
 .beta-message.error {
-  background: rgba(239, 68, 68, 0.2);
+  background: rgba(239, 68, 68, 0.12);
   color: #fca5a5;
-  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-color: rgba(239, 68, 68, 0.4);
 }
 
 /* ============================================

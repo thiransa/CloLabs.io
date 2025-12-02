@@ -1,18 +1,12 @@
 import './App.css'
-import logo from './assets/17F007DC-F981-4891-AED4-6F81382D4181.PNG'
-import slackLogo from './assets/slack.png'
-import gptLogo from './assets/gpt.png'
-import calendarLogo from './assets/calender.png'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import AuthForm from './components/AuthForm'
 import DemoSection from './components/DemoSection'
 import { useAuth } from './contexts/AuthContext'
-import gmailLogo from './assets/gmail.png'
-import mailchimpLogo from './assets/mailchimp.png'
-import driveLogo from './assets/drive.png'
 import { supabase } from './lib/supabaseClient'
 import { Zap, Workflow, Brain, Link2, CheckCircle, Mail } from 'lucide-react'
+import LandingHero from './components/landing/LandingHero'
 
 function App() {
   const [showSignupPopup, setShowSignupPopup] = useState(false)
@@ -21,6 +15,11 @@ function App() {
   const [betaMessage, setBetaMessage] = useState('')
   const navigate = useNavigate()
   const { user, loading } = useAuth()
+
+  const problemSectionRef = useRef(null)
+  const solutionSectionRef = useRef(null)
+  const featuresSectionRef = useRef(null)
+  const betaSectionRef = useRef(null)
 
   useEffect(() => {
     if (!loading && user) {
@@ -77,61 +76,54 @@ function App() {
     }
   }
 
+  const scrollToSection = (ref) => {
+    if (ref?.current) {
+      ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }
+
+  const handleNavSelect = (section) => {
+    switch (section) {
+      case 'home':
+        if (typeof window !== 'undefined') {
+          window.scrollTo({ top: 0, behavior: 'smooth' })
+        }
+        break
+      case 'challenge':
+        scrollToSection(problemSectionRef)
+        break
+      case 'fix':
+        scrollToSection(solutionSectionRef)
+        break
+      case 'features':
+        scrollToSection(featuresSectionRef)
+        break
+      case 'action':
+        scrollToSection(betaSectionRef)
+        break
+      case 'pricing':
+        navigate('/pricing')
+        break
+      default:
+        break
+    }
+  }
+
   return (
     <div className="gradient-background">
-      {/* HERO SECTION - Wrapped for proper spacing */}
-      <div className="hero-section">
-        {/* Decorative Rings */}
-        <div className="decorative-rings">
-        <div className="ring ring-1" style={{borderWidth: '2px', borderStyle: 'solid', borderColor: 'rgba(128, 128, 128, 0.25)', outline: 'none', boxShadow: 'none'}}></div>
-        <div className="ring ring-2" style={{borderWidth: '2px', borderStyle: 'solid', borderColor: 'rgba(128, 128, 128, 0.23)', outline: 'none', boxShadow: 'none'}}>
-          <div className="ring-icon ring-icon-image slack-icon">
-            <img src={slackLogo} alt="Slack logo" />
-          </div>
-        </div>
-        <div className="ring ring-3" style={{borderWidth: '2px', borderStyle: 'solid', borderColor: 'rgba(128, 128, 128, 0.21)', outline: 'none', boxShadow: 'none'}}>
-          <div className="ring-icon ring-icon-image gmail-icon">
-            <img src={gmailLogo} alt="Gmail logo" />
-          </div>
-        </div>
-        <div className="ring ring-4" style={{borderWidth: '2px', borderStyle: 'solid', borderColor: 'rgba(128, 128, 128, 0.19)', outline: 'none', boxShadow: 'none'}}>
-          <div className="ring-icon ring-icon-image gpt-icon">
-            <img src={gptLogo} alt="ChatGPT logo" />
-          </div>
-        </div>
-        <div className="ring ring-5" style={{borderWidth: '2px', borderStyle: 'solid', borderColor: 'rgba(128, 128, 128, 0.17)', outline: 'none', boxShadow: 'none'}}>
-          <div className="ring-icon ring-icon-image calendar-icon">
-            <img src={calendarLogo} alt="Calendar logo" />
-          </div>
-          <div className="ring-icon ring-icon-image mailchimp-icon">
-            <img src={mailchimpLogo} alt="Mailchimp logo" />
-          </div>
-          <div className="ring-icon ring-icon-image drive-icon">
-            <img src={driveLogo} alt="Google Drive logo" />
-          </div>
-        </div>
-      </div>
-      
-      <img src={logo} alt="CloLabs Logo" className="logo" />
-      <div className="logo-text">Clolabs</div>
-      <div className="start-your-text">Start Your</div>
-      <div className="ai-text">AI</div>
-      <div className="automation-text">Automation Here</div>
-      <div className="description-text">Create, connect, and automate your daily tasks in just a few clicks with CloLabs</div>
-      <button className="start-automating-button" onClick={handleSignupClick}>
-        Start Automating
-      </button>
-      <Link to="/explore" className="nav-text">
-        Explore CloLabs ↗
-      </Link>
-      <button className="signup-button" onClick={handleSignupClick}>
-        Sign Up
-      </button>
-      </div>
-      {/* END HERO SECTION */}
+      <LandingHero
+        onPrimaryAction={handleSignupClick}
+        onSecondaryAction={() => navigate('/explore')}
+        onNavAction={handleSignupClick}
+        onNavSelect={handleNavSelect}
+      />
       
       {/* NEW SECTION: Problem / Pain Point */}
-      <section className="landing-section problem-section" aria-labelledby="problem-heading">
+      <section
+        className="landing-section problem-section"
+        aria-labelledby="problem-heading"
+        ref={problemSectionRef}
+      >
         <div className="section-container problem-layout">
           <div className="problem-content">
             <h2 id="problem-heading" className="section-title">The Automation Gap</h2>
@@ -176,7 +168,11 @@ function App() {
       </section>
 
       {/* NEW SECTION: Solution */}
-      <section className="landing-section solution-section" aria-labelledby="solution-heading">
+      <section
+        className="landing-section solution-section"
+        aria-labelledby="solution-heading"
+        ref={solutionSectionRef}
+      >
         <div className="section-container solution-layout">
           <div className="solution-content">
             <h2 id="solution-heading" className="section-title">AI-Powered Simplicity</h2>
@@ -230,7 +226,11 @@ function App() {
       </section>
 
       {/* NEW SECTION: Core Features */}
-      <section className="landing-section features-section" aria-labelledby="features-heading">
+      <section
+        className="landing-section features-section"
+        aria-labelledby="features-heading"
+        ref={featuresSectionRef}
+      >
         <div className="section-container">
           <h2 id="features-heading" className="section-title">Powerful Features, Simple Interface</h2>
           <div className="features-grid" role="list">
@@ -307,7 +307,11 @@ function App() {
       <DemoSection user={user} navigate={navigate} />
 
       {/* NEW SECTION: Beta Signup */}
-      <section className="landing-section beta-signup-section" aria-labelledby="beta-heading">
+      <section
+        className="landing-section beta-signup-section"
+        aria-labelledby="beta-heading"
+        ref={betaSectionRef}
+      >
         <div className="section-container beta-container">
           <h2 id="beta-heading" className="section-title">Join Our Beta Program</h2>
           <p className="section-description">
